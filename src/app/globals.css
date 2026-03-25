@@ -180,3 +180,534 @@ audio::-webkit-media-controls-panel {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--grey-text);
 }
+
+/* ============================================
+   LAYOUT CLASSES (responsive via media queries)
+   ============================================ */
+
+/* Navbar */
+.utility-bar {
+  border-bottom: 1px solid rgba(170,170,170,0.15);
+  padding: 6px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-family: var(--font-poppins);
+  font-weight: 300;
+  color: var(--grey-text);
+}
+
+.main-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--dark-text);
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.mobile-nav-overlay {
+  display: none;
+}
+
+/* Hero */
+.hero-banner {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+}
+
+.hero-content {
+  position: absolute;
+  bottom: 48px;
+  left: 40px;
+  max-width: 600px;
+}
+
+/* Description */
+.desc-section {
+  padding: 56px 40px;
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Featured */
+.featured-section {
+  padding: 0 40px 64px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.featured-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 32px;
+}
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+/* Secondary banner */
+.secondary-banner {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* About grid */
+.about-grid {
+  padding: 64px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.about-grid-start {
+  align-items: start;
+}
+
+/* Pillars */
+.section-pad {
+  padding: 64px 40px;
+}
+
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+
+/* Bottom CTA */
+.bottom-cta {
+  padding: 56px 40px;
+  text-align: center;
+}
+
+/* Footer */
+.footer-inner {
+  padding: 56px 40px 32px;
+}
+
+.footer-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 60px;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  margin-top: 40px;
+  padding-top: 20px;
+}
+
+/* Songs listing */
+.songs-banner {
+  background: var(--blue-dark);
+  padding: 56px 40px;
+  text-align: center;
+}
+
+.filter-bar {
+  padding: 32px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.songs-list {
+  padding: 0 40px 64px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.song-row {
+  display: grid;
+  grid-template-columns: 140px 1fr auto;
+  gap: 24px;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s ease;
+}
+
+.song-row-thumb {
+  width: 140px;
+  height: 80px;
+  overflow: hidden;
+}
+
+.song-row-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+}
+
+/* Song detail */
+.song-detail-banner {
+  width: 100%;
+  height: 360px;
+  overflow: hidden;
+  position: relative;
+}
+
+.song-detail-banner-content {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  right: 40px;
+  max-width: 700px;
+}
+
+.song-detail-body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 40px 64px;
+}
+
+.song-meta-strip {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+
+.song-contributor-bar {
+  border-top: 1px solid var(--border);
+  padding-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Roadmap */
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+/* Contribute form */
+.contribute-section {
+  padding: 64px 40px;
+}
+
+.contribute-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* ============================================
+   TABLET: <= 1024px
+   ============================================ */
+@media (max-width: 1024px) {
+  .pillars-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .roadmap-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .featured-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ============================================
+   MOBILE: <= 768px
+   ============================================ */
+@media (max-width: 768px) {
+  /* Navbar */
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border);
+    padding: 20px;
+    gap: 16px;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  .mobile-nav-overlay.open {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 49;
+  }
+
+  .utility-bar {
+    padding: 6px 16px;
+    font-size: 11px;
+  }
+
+  .main-nav {
+    padding: 16px;
+  }
+
+  /* Hero banner */
+  .hero-banner {
+    height: 280px;
+  }
+
+  .hero-content {
+    bottom: 24px;
+    left: 20px;
+    right: 20px;
+  }
+
+  .hero-content h1 {
+    font-size: 26px;
+  }
+
+  .hero-content p {
+    font-size: 12px;
+  }
+
+  /* Description */
+  .desc-section {
+    padding: 36px 20px;
+  }
+
+  /* Featured */
+  .featured-section {
+    padding: 0 20px 40px;
+  }
+
+  .featured-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .featured-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  /* Secondary banner */
+  .secondary-banner {
+    height: 220px;
+  }
+
+  .secondary-banner h2 {
+    font-size: 22px;
+    padding: 0 20px;
+  }
+
+  /* About grid */
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 36px 20px;
+  }
+
+  /* Pillars */
+  .section-pad {
+    padding: 36px 20px;
+  }
+
+  .pillars-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  /* Bottom CTA */
+  .bottom-cta {
+    padding: 36px 20px;
+  }
+
+  .bottom-cta h2 {
+    font-size: 22px;
+  }
+
+  /* Footer */
+  .footer-inner {
+    padding: 36px 20px 24px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  /* Songs listing */
+  .songs-banner {
+    padding: 36px 20px;
+  }
+
+  .songs-banner h1 {
+    font-size: 26px;
+  }
+
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
+    gap: 12px;
+  }
+
+  .filter-bar .filter-count {
+    margin-left: 0;
+    text-align: right;
+  }
+
+  .songs-list {
+    padding: 0 20px 40px;
+  }
+
+  .song-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 16px 0;
+  }
+
+  .song-row-thumb {
+    width: 100%;
+    height: 180px;
+  }
+
+  .song-row-tags {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .song-row-title .devanagari-inline {
+    display: block;
+    margin-left: 0;
+    margin-top: 2px;
+  }
+
+  /* Song detail */
+  .song-detail-banner {
+    height: 240px;
+  }
+
+  .song-detail-banner-content {
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+  }
+
+  .song-detail-banner-content h1 {
+    font-size: 24px;
+  }
+
+  .song-detail-body {
+    padding: 32px 20px 48px;
+  }
+
+  .song-meta-strip {
+    gap: 16px;
+  }
+
+  .song-contributor-bar {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  /* About page */
+  .roadmap-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .contribute-section {
+    padding: 36px 20px;
+  }
+
+  .contribute-form-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* ============================================
+   SMALL MOBILE: <= 480px
+   ============================================ */
+@media (max-width: 480px) {
+  .hero-banner {
+    height: 220px;
+  }
+
+  .hero-content h1 {
+    font-size: 22px;
+  }
+
+  .secondary-banner {
+    height: 180px;
+  }
+
+  .secondary-banner h2 {
+    font-size: 18px;
+  }
+
+  .card-info-band h4 {
+    font-size: 13px;
+  }
+
+  h1 { font-size: 24px; }
+  h2 { font-size: 20px; }
+  h3 { font-size: 17px; }
+}
