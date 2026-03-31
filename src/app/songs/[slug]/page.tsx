@@ -1,10 +1,9 @@
-import { notFound } from "next/navigation";
-import Link from "next/link";
-import { getAllSongs, getSong } from "@/lib/songs";
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import { getAllSongsFromDB, getSongBySlug } from '@/lib/songs-db';
+import SongDetailClient from './SongDetailClient';
 
-export function generateStaticParams() {
-  return getAllSongs().map((song) => ({ slug: song.slug }));
-}
+export const dynamic = 'force-dynamic';
 
 export default async function SongDetailPage({
   params,
@@ -12,110 +11,125 @@ export default async function SongDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const song = getSong(slug);
+  const song = await getSongBySlug(slug);
   if (!song) notFound();
+
+  // Get related songs (same occasion, excluding current)
+  const allSongs = await getAllSongsFromDB();
+  const related = allSongs
+    .filter((s) => s.slug !== slug && s.occasion === song.occasion)
+    .slice(0, 3);
 
   return (
     <>
-      {/* Banner image */}
+      {/* Banner */}
       <section className="song-detail-banner">
-        <img src={song.image} alt={song.title} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 50%)" }} />
+        <img src={song.image} alt={song.title} />
         <div className="song-detail-banner-content">
-          <p style={{ fontFamily: "var(--font-raleway)", fontSize: "9px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "3px", color: "rgba(255,255,255,0.7)", marginBottom: "8px" }}>
-            {song.occasion} · {song.region}
-          </p>
-          <h1 style={{ fontFamily: "var(--font-fraunces)", fontSize: "34px", fontWeight: 400, color: "#ffffff", marginBottom: "6px" }}>
-            {song.title}
-          </h1>
-          <p style={{ fontFamily: "var(--font-poppins)", fontSize: "18px", fontWeight: 200, color: "rgba(255,255,255,0.8)" }}>
-            {song.titleDevanagari}
-          </p>
+          <span className="occasion-label">{song.occasion}</span>
+          <h1>{song.title}</h1>
+          <p className="devanagari-title">{song.title_devanagari}</p>
         </div>
       </section>
 
-      {/* Song content */}
+      {/* Body */}
       <div className="song-detail-body">
         {/* Meta strip */}
         <div className="song-meta-strip">
           {[
-            { label: "Region", value: song.region },
-            { label: "District", value: song.district },
-            { label: "Occasion", value: song.occasion },
-            { label: "Contributor", value: `${song.contributorName}, ${song.contributorVillage}` },
+            { label: 'Region', value: song.region },
+            { label: 'District', value: song.district },
+            { label: 'Occasion', value: song.occasion },
+            { label: 'Contributor', value: `${song.contributor_name}, ${song.contributor_village}` },
           ].map((item) => (
-            <div key={item.label}>
-              <span style={{ fontFamily: "var(--font-raleway)", fontSize: "9px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "2px", color: "var(--grey-text)", display: "block", marginBottom: "4px" }}>
-                {item.label}
-              </span>
-              <span style={{ fontFamily: "var(--font-poppins)", fontSize: "13px", fontWeight: 300, color: "var(--dark-text)" }}>
-                {item.value}
-              </span>
+            <div key={item.label} className="meta-item">
+              <p className="meta-label">{item.label}</p>
+              <p className="meta-value">{item.value}</p>
             </div>
           ))}
         </div>
 
-        {/* Audio player */}
-        {song.audioUrl && (
-          <div style={{ marginBottom: "40px" }}>
-            <p className="section-label" style={{ marginBottom: "10px" }}>Listen</p>
-            <audio controls style={{ width: "100%" }}><source src={song.audioUrl} /></audio>
+        {/* Lyrics — 3 column side-by-side */}
+        {(song.lyrics_original || song.lyrics_english || song.lyrics_hindi) && (
+          <div className="lyrics-columns">
+            {song.lyrics_original && (
+              <div className="lyrics-column">
+                <h3>Pahadi</h3>
+                <div className="lyrics-text">{song.lyrics_original}</div>
+              </div>
+            )}
+            {song.lyrics_english && (
+              <div className="lyrics-column">
+                <h3>English</h3>
+                <div className="lyrics-text">{song.lyrics_english}</div>
+              </div>
+            )}
+            {song.lyrics_hindi && (
+              <div className="lyrics-column">
+                <h3>Hindi</h3>
+                <div className="lyrics-text">{song.lyrics_hindi}</div>
+              </div>
+            )}
           </div>
         )}
 
-        {/* Garhwali Lyrics */}
-        {song.lyricsGarhwali && (
-          <div style={{ marginBottom: "40px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "18px", flexWrap: "wrap" }}>
-              <h2 style={{ fontFamily: "var(--font-raleway)", fontSize: "25px", fontWeight: 400, color: "var(--grey-text)" }}>Garhwali Lyrics</h2>
-              <span style={{ fontFamily: "var(--font-raleway)", fontSize: "9px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "1.5px", background: "var(--light-blue)", color: "var(--blue-dark)", padding: "3px 10px" }}>Original</span>
-            </div>
-            <div style={{ fontFamily: "var(--font-poppins)", fontSize: "15px", fontWeight: 300, color: "var(--dark-text)", lineHeight: 2.2, paddingLeft: "20px", borderLeft: "2px solid var(--orange)", whiteSpace: "pre-line" }}>
-              {song.lyricsGarhwali}
+        {/* Cultural Context — collapsible */}
+        {song.cultural_context && (
+          <SongDetailClient culturalContext={song.cultural_context} audioUrl={song.audio_url} songTitle={song.title} />
+        )}
+
+        {/* Related Songs */}
+        {related.length > 0 && (
+          <div className="related-section">
+            <span className="section-label">Related Songs</span>
+            <h3 style={{ marginBottom: '28px', marginTop: '8px' }}>More {song.occasion} Songs</h3>
+            <div className="card-grid-3">
+              {related.map((r) => (
+                <Link key={r.slug} href={`/songs/${r.slug}`}>
+                  <div className="song-card">
+                    <img src={r.image} alt={r.title} />
+                    <div className="song-card-content">
+                      <h4>{r.title}</h4>
+                      <p className="devanagari">{r.title_devanagari}</p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         )}
 
-        {/* English Translation */}
-        {song.lyricsEnglish && (
-          <div style={{ marginBottom: "40px" }}>
-            <h2 style={{ fontFamily: "var(--font-raleway)", fontSize: "25px", fontWeight: 400, color: "var(--grey-text)", marginBottom: "18px" }}>English Translation</h2>
-            <div style={{ fontFamily: "var(--font-poppins)", fontSize: "13px", fontWeight: 200, color: "var(--grey-text)", lineHeight: 2, whiteSpace: "pre-line", textAlign: "justify" }}>
-              {song.lyricsEnglish}
-            </div>
-          </div>
-        )}
-
-        {/* Hindi Translation */}
-        {song.lyricsHindi && (
-          <div style={{ marginBottom: "40px" }}>
-            <h2 style={{ fontFamily: "var(--font-raleway)", fontSize: "25px", fontWeight: 400, color: "var(--grey-text)", marginBottom: "18px" }}>Hindi Translation</h2>
-            <div style={{ fontFamily: "var(--font-poppins)", fontSize: "14px", fontWeight: 300, color: "var(--grey-text)", lineHeight: 2, whiteSpace: "pre-line" }}>
-              {song.lyricsHindi}
-            </div>
-          </div>
-        )}
-
-        {/* Cultural Context */}
-        {song.culturalContext && (
-          <div style={{ marginBottom: "48px" }}>
-            <h2 style={{ fontFamily: "var(--font-raleway)", fontSize: "25px", fontWeight: 400, color: "var(--grey-text)", marginBottom: "18px" }}>Cultural Context</h2>
-            <div style={{ fontFamily: "var(--font-poppins)", fontSize: "13px", fontWeight: 200, color: "var(--grey-text)", lineHeight: 1.9, whiteSpace: "pre-line", textAlign: "justify" }}>
-              {song.culturalContext}
-            </div>
-          </div>
-        )}
-
-        {/* Contributor credit */}
+        {/* Contributor bar */}
         <div className="song-contributor-bar">
           <div>
-            <p className="section-label" style={{ marginBottom: "6px" }}>Contributed by</p>
-            <p style={{ fontFamily: "var(--font-fraunces)", fontSize: "17px", fontWeight: 400, color: "var(--dark-text)" }}>{song.contributorName}</p>
-            <p style={{ fontFamily: "var(--font-poppins)", fontSize: "12px", fontWeight: 200, color: "var(--grey-text)" }}>{song.contributorVillage}</p>
+            <span className="section-label">Contributed by</span>
+            <p style={{ fontFamily: 'var(--font-heading)', fontSize: '17px', fontWeight: 400, color: 'var(--text)', marginTop: '4px' }}>
+              {song.contributor_name}
+            </p>
+            <p style={{ fontSize: '13px', color: 'var(--text)' }}>{song.contributor_village}</p>
           </div>
-          <Link href="/songs" className="btn-outline">Back to All Songs</Link>
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <a
+              href={`https://wa.me/?text=${encodeURIComponent(`Check out "${song.title}" on Pahadi Library`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="share-btn"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.649-1.516A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.09 0-4.037-.648-5.642-1.756l-.405-.24-2.758.9.87-2.7-.264-.42A9.72 9.72 0 0 1 2.25 12c0-5.385 4.365-9.75 9.75-9.75S21.75 6.615 21.75 12s-4.365 9.75-9.75 9.75z"/></svg>
+              Share
+            </a>
+            <Link href="/songs" className="btn-outline">All Songs</Link>
+          </div>
         </div>
       </div>
+
+      {/* Sticky audio player */}
+      {song.audio_url && (
+        <div className="sticky-player">
+          <span className="player-title">{song.title}</span>
+          <audio controls><source src={song.audio_url} /></audio>
+        </div>
+      )}
     </>
   );
 }

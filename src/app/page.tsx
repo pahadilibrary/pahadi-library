@@ -1,144 +1,137 @@
-import Link from "next/link";
-import { getAllSongs } from "@/lib/songs";
+import Link from 'next/link';
+import { getAllSongsFromDB } from '@/lib/songs-db';
+import ScrollReveal from '@/components/ScrollReveal';
 
-export default function HomePage() {
-  const allSongs = getAllSongs();
-  const featured = allSongs.filter((s) => s.featured).slice(0, 4);
-  const occasions = [...new Set(allSongs.map((s) => s.occasion))];
+export const dynamic = 'force-dynamic';
+
+export default async function HomePage() {
+  const allSongs = await getAllSongsFromDB();
+  const featured = allSongs.filter((s) => s.featured).slice(0, 3);
+  const recent = allSongs.slice(0, 4);
 
   return (
     <>
-      {/* Hero Banner */}
-      <section className="hero-banner">
+      {/* Hero Banner — inset */}
+      <section className="inset-banner">
         <img
-          src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&h=500&fit=crop"
-          alt="Garhwal Himalayan landscape"
-          style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }}
+          src="/images/IMG_20251009_092027966.jpg"
+          alt="Himalayan landscape"
+          style={{ objectPosition: 'center 50%' }}
         />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.35) 100%)" }} />
-        <div className="hero-content">
-          <p style={{ fontFamily: "var(--font-raleway)", fontSize: "9px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "3px", color: "rgba(255,255,255,0.8)", marginBottom: "10px" }}>
-            A Digital Cultural Archive
-          </p>
-          <h1 style={{ fontFamily: "var(--font-fraunces)", fontSize: "36px", fontWeight: 400, color: "#ffffff", lineHeight: 1.2, marginBottom: "14px" }}>
-            Songs of the<br />Garhwal Himalayas
-          </h1>
-          <p style={{ fontFamily: "var(--font-poppins)", fontSize: "13px", fontWeight: 200, color: "rgba(255,255,255,0.85)", lineHeight: 1.7 }}>
-            Preserving the folk music, oral traditions, and living culture of Uttarakhand&apos;s mountain communities.
-          </p>
+        <div className="banner-content">
+          <p className="tagline">Echoes of the Himalayas</p>
+          <h1>Songs of the<br />Himalayas</h1>
+          <p>Preserving the music, oral traditions, and living culture of Uttarakhand&apos;s mountain communities.</p>
         </div>
       </section>
 
       {/* Description */}
-      <section className="desc-section">
-        <p style={{ fontFamily: "var(--font-poppins)", fontSize: "14px", fontWeight: 200, color: "var(--grey-text)", lineHeight: 1.9 }}>
-          Pahadi Library is a community-built archive of Garhwali folk songs — lyrics in the original Devanagari, translations in English and Hindi, cultural context, audio recordings, and contributor credits from across the villages of Uttarakhand. We document the songs before they fade from living memory.
-        </p>
-      </section>
+      <ScrollReveal>
+        <section className="desc-section">
+          <p>
+            From our motherland to you. Pahadi Library exists to collect every fragment of culture we can — translating every song for those who feel alienated from the culture they were born in, documenting every story for those who never heard of it. We preserve these songs before they fade from living memory.
+          </p>
+        </section>
+      </ScrollReveal>
 
       {/* Featured Songs */}
-      <section className="featured-section">
-        <div className="featured-header">
-          <h2 style={{ fontFamily: "var(--font-raleway)", fontSize: "25px", fontWeight: 400, color: "var(--grey-text)" }}>
-            Featured from our Archive
-          </h2>
-          <Link href="/songs" className="btn-outline" style={{ fontSize: "10px", padding: "8px 20px" }}>
-            View All Songs
-          </Link>
-        </div>
+      <ScrollReveal>
+        <section className="section-container">
+          <span className="section-label">Featured</span>
+          <h2 className="section-heading">From our Archive</h2>
 
-        <div className="featured-grid">
-          {featured.slice(0, 3).map((song) => (
-            <Link key={song.slug} href={`/songs/${song.slug}`} style={{ textDecoration: "none" }}>
-              <div className="flat-card">
-                <div style={{ width: "100%", height: "200px", overflow: "hidden" }}>
-                  <img src={song.image} alt={song.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <div className="card-grid-3">
+            {featured.map((song) => (
+              <Link key={song.slug} href={`/songs/${song.slug}`}>
+                <div className="song-card">
+                  <img src={song.image} alt={song.title} />
+                  <div className="song-card-content">
+                    <h4>{song.title}</h4>
+                    <p className="devanagari">{song.title_devanagari}</p>
+                    <p className="card-meta">{song.region}</p>
+                  </div>
                 </div>
-                <div className="card-info-band">
-                  <h4 style={{ marginBottom: "4px" }}>{song.title}</h4>
-                  <p style={{ fontFamily: "var(--font-poppins)", fontSize: "11px", fontWeight: 200, color: "rgba(255,255,255,0.5)" }}>
-                    {song.titleDevanagari} · {song.region}
-                  </p>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Secondary Banner */}
-      <section className="secondary-banner">
-        <img
-          src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600&h=400&fit=crop"
-          alt="Mountain valley in Garhwal"
-          style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 60%" }}
-        />
-        <div style={{ position: "absolute", inset: 0, background: "rgba(0,75,122,0.45)", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: "12px" }}>
-          <p className="section-label" style={{ color: "rgba(255,255,255,0.7)" }}>Community Initiative</p>
-          <h2 style={{ fontFamily: "var(--font-fraunces)", fontSize: "28px", fontWeight: 400, color: "#ffffff", textAlign: "center", maxWidth: "600px" }}>
-            Every song carries a village&apos;s story.<br />Help us preserve them.
-          </h2>
-          <Link href="/about#contribute" className="btn-outline" style={{ borderColor: "#ffffff", color: "#ffffff", marginTop: "8px", fontSize: "10px" }}>
-            Contribute a Song
-          </Link>
-        </div>
-      </section>
-
-      {/* About Strip */}
-      <section className="about-grid">
-        <div style={{ overflow: "hidden" }}>
-          <img src="https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=600&h=400&fit=crop" alt="Garhwali village scene" style={{ width: "100%", height: "auto", display: "block" }} />
-        </div>
-        <div>
-          <p className="section-label" style={{ marginBottom: "12px" }}>About the Archive</p>
-          <h2 style={{ fontFamily: "var(--font-raleway)", fontSize: "25px", fontWeight: 400, color: "var(--grey-text)", marginBottom: "18px" }}>Pahadi Library</h2>
-          <p style={{ fontFamily: "var(--font-poppins)", fontSize: "13px", fontWeight: 200, color: "var(--grey-text)", lineHeight: 1.9, marginBottom: "20px", textAlign: "justify" }}>
-            The folk songs of Garhwal are not merely entertainment — they are living repositories of history, ecology, spirituality, and social bonds. Nyoli carries the ache of separation across valleys. Jagar invocations connect communities to their ancestral deities. Mangal geet encode wedding rituals in melody. Yet with migration accelerating and oral traditions fading, these songs risk being lost within a generation.
-          </p>
-          <p style={{ fontFamily: "var(--font-poppins)", fontSize: "13px", fontWeight: 200, color: "var(--grey-text)", lineHeight: 1.9, marginBottom: "24px", textAlign: "justify" }}>
-            Pahadi Library documents each song with original Garhwali lyrics, English and Hindi translations, cultural context, and contributor credits — building a searchable, permanent record created by the community, for the community.
-          </p>
-          <Link href="/about" className="btn-outline">Read More</Link>
-        </div>
-      </section>
-
-      {/* Pillars Section */}
-      <section className="section-pad" style={{ borderTop: "1px solid var(--border)" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: "48px" }}>
-            <p className="section-label" style={{ marginBottom: "12px" }}>What We Preserve</p>
-            <h2 style={{ fontFamily: "var(--font-raleway)", fontSize: "25px", fontWeight: 400, color: "var(--grey-text)" }}>Pillars of Pahadi Culture</h2>
-          </div>
-
-          <div className="pillars-grid">
-            {[
-              { title: "Folk Songs", desc: "Wedding hymns, harvest songs, seasonal celebrations, and the haunting Nyoli of separation.", count: `${allSongs.length} songs` },
-              { title: "Oral Traditions", desc: "Jagar rituals, Pandav Lila dance-dramas, and the bardic traditions of the Jagari storytellers.", count: "Coming soon" },
-              { title: "Living Ecology", desc: "The buransh, kafal, and the Chipko legacy — songs that carry ecological knowledge.", count: "Coming soon" },
-              { title: "Community Voices", desc: "Contributors from villages across Garhwal sharing songs from their own family traditions.", count: `${occasions.length} occasions` },
-            ].map((pillar) => (
-              <div key={pillar.title}>
-                <div style={{ width: "100%", height: "2px", background: "var(--orange)", marginBottom: "20px" }} />
-                <h3 style={{ fontFamily: "var(--font-fraunces)", fontSize: "18px", fontWeight: 400, color: "var(--dark-text)", marginBottom: "10px" }}>{pillar.title}</h3>
-                <p style={{ fontFamily: "var(--font-poppins)", fontSize: "12px", fontWeight: 200, color: "var(--grey-text)", lineHeight: 1.8, marginBottom: "14px" }}>{pillar.desc}</p>
-                <span style={{ fontFamily: "var(--font-raleway)", fontSize: "9px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "2px", color: "var(--orange)" }}>{pillar.count}</span>
-              </div>
+              </Link>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollReveal>
+
+      {/* Secondary Banner */}
+      <ScrollReveal>
+        <section className="secondary-banner">
+          <img
+            src="/images/IMG_20250606_161811543.jpg"
+            alt="Mountain valley in the Himalayas"
+            style={{ objectPosition: 'center 50%' }}
+          />
+          <div className="secondary-banner-content">
+            <h2>Every song carries a village&apos;s story.<br />Help us preserve them.</h2>
+            <Link href="/contribute" className="btn-outline-white">Contribute a Song</Link>
+          </div>
+        </section>
+      </ScrollReveal>
+
+      {/* Recently Added */}
+      <ScrollReveal>
+        <section className="section-container" style={{ paddingTop: '80px' }}>
+          <span className="section-label">Recently Added</span>
+          <h2 className="section-heading">New in the Archive</h2>
+
+          <div className="card-grid-3">
+            {recent.slice(0, 3).map((song) => (
+              <Link key={song.slug} href={`/songs/${song.slug}`}>
+                <div className="song-card">
+                  <img src={song.image} alt={song.title} />
+                  <div className="song-card-content">
+                    <h4>{song.title}</h4>
+                    <p className="devanagari">{song.title_devanagari}</p>
+                    <p className="card-meta">{song.region}</p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      </ScrollReveal>
+
+      {/* Mountain divider */}
+      <div className="mountain-divider">&#9650; &#9650; &#9650;</div>
+
+      {/* About Strip */}
+      <ScrollReveal>
+        <section className="about-strip">
+          <div className="about-strip-image">
+            <img
+              src="/images/IMG_20251009_090408599.jpg"
+              alt="Himalayan village scene"
+            />
+          </div>
+          <div>
+            <span className="section-label">About the Archive</span>
+            <h2 style={{ marginBottom: '18px' }}>Why This Archive?</h2>
+            <p style={{ marginBottom: '16px' }}>
+              I always wanted to know the lyrics of Pahadi songs, but there was no website, no place where I could find decent translations. So I built one — a single platform for the culture I grew up with.
+            </p>
+            <p style={{ marginBottom: '24px' }}>
+              The songs of the Himalayas are living repositories of history, ecology, and community bonds. With migration emptying mountain villages, these songs risk being lost within a generation.
+            </p>
+            <Link href="/about" className="btn-outline">Read More</Link>
+          </div>
+        </section>
+      </ScrollReveal>
 
       {/* Bottom CTA */}
-      <section className="bottom-cta" style={{ borderTop: "1px solid var(--border)" }}>
-        <p className="section-label" style={{ marginBottom: "12px" }}>Join the Archive</p>
-        <h2 style={{ fontFamily: "var(--font-fraunces)", fontSize: "26px", fontWeight: 400, color: "var(--dark-text)", marginBottom: "16px" }}>
-          Know a folk song from your village?
-        </h2>
-        <p style={{ fontFamily: "var(--font-poppins)", fontSize: "13px", fontWeight: 200, color: "var(--grey-text)", maxWidth: "520px", margin: "0 auto 24px", lineHeight: 1.8 }}>
-          We are collecting songs from contributors across Garhwal. Share a song your grandmother sang, and help build the largest Pahadi folk music archive.
-        </p>
-        <Link href="/about#contribute" className="btn-filled">Submit a Song</Link>
-      </section>
+      <ScrollReveal>
+        <section className="bottom-cta">
+          <span className="section-label">Join the Archive</span>
+          <h2>Know a song from your village?</h2>
+          <p>
+            Share a song your grandmother sang, and help build the largest Pahadi music archive.
+          </p>
+          <Link href="/contribute" className="btn-filled">Submit a Song</Link>
+        </section>
+      </ScrollReveal>
     </>
   );
 }

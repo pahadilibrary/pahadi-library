@@ -1,17 +1,16 @@
-import type { Metadata, Viewport } from "next";
-import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import type { Metadata, Viewport } from 'next';
+import './globals.css';
+import LayoutShell from '@/components/LayoutShell';
 
 export const viewport: Viewport = {
-  width: "device-width",
+  width: 'device-width',
   initialScale: 1,
 };
 
 export const metadata: Metadata = {
-  title: "Pahadi Library — Garhwali Folk Songs & Cultural Archive",
+  title: 'Pahadi Library — Songs & Cultural Archive of the Himalayas',
   description:
-    "A digital archive preserving the folk songs, oral traditions, and living culture of the Garhwal Himalayas, Uttarakhand.",
+    'A digital archive preserving the songs, oral traditions, and living culture of the Himalayas, Uttarakhand. Lyrics in Devanagari, English and Hindi translations, cultural context, and audio recordings.',
 };
 
 export default function RootLayout({
@@ -22,9 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <LayoutShell>{children}</LayoutShell>
       </body>
     </html>
   );
