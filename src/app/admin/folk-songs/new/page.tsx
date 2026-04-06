@@ -9,16 +9,13 @@ interface GlossaryEntry {
   meaning: string;
 }
 
-interface SongForm {
+interface FolkSongForm {
   title: string;
   title_devanagari: string;
   slug: string;
-  region: string;
-  district: string;
-  occasion: string;
+  category: string;
   contributor_name: string;
   contributor_village: string;
-  audio_url: string;
   image: string;
   featured: boolean;
   excerpt: string;
@@ -30,16 +27,13 @@ interface SongForm {
   status: string;
 }
 
-const emptyForm: SongForm = {
+const emptyForm: FolkSongForm = {
   title: '',
   title_devanagari: '',
   slug: '',
-  region: '',
-  district: '',
-  occasion: '',
+  category: 'bajuband',
   contributor_name: '',
   contributor_village: '',
-  audio_url: '',
   image: '',
   featured: false,
   excerpt: '',
@@ -51,18 +45,18 @@ const emptyForm: SongForm = {
   status: 'published',
 };
 
-export default function AdminSongForm() {
+export default function AdminFolkSongForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const editId = searchParams.get('edit');
 
-  const [form, setForm] = useState<SongForm>(emptyForm);
+  const [form, setForm] = useState<FolkSongForm>(emptyForm);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
     if (editId) {
-      fetch('/api/admin/songs')
+      fetch('/api/admin/folk-songs')
         .then(r => r.json())
         .then(data => {
           const song = (data.songs || []).find((s: { id: string }) => s.id === editId);
@@ -71,12 +65,9 @@ export default function AdminSongForm() {
               title: song.title || '',
               title_devanagari: song.title_devanagari || '',
               slug: song.slug || '',
-              region: song.region || '',
-              district: song.district || '',
-              occasion: song.occasion || '',
+              category: song.category || 'bajuband',
               contributor_name: song.contributor_name || '',
               contributor_village: song.contributor_village || '',
-              audio_url: song.audio_url || '',
               image: song.image || '',
               featured: song.featured || false,
               excerpt: song.excerpt || '',
@@ -92,7 +83,7 @@ export default function AdminSongForm() {
     }
   }, [editId]);
 
-  function update(field: keyof SongForm, value: string | boolean | GlossaryEntry[]) {
+  function update(field: keyof FolkSongForm, value: string | boolean | GlossaryEntry[]) {
     setForm(prev => ({ ...prev, [field]: value }));
     if (field === 'title' && !editId) {
       const slug = (value as string)
@@ -105,12 +96,8 @@ export default function AdminSongForm() {
     }
   }
 
-  // Glossary helpers
   function addGlossaryEntry() {
-    setForm(prev => ({
-      ...prev,
-      glossary: [...prev.glossary, { word: '', transliteration: '', meaning: '' }],
-    }));
+    setForm(prev => ({ ...prev, glossary: [...prev.glossary, { word: '', transliteration: '', meaning: '' }] }));
   }
 
   function updateGlossaryEntry(index: number, field: keyof GlossaryEntry, value: string) {
@@ -122,10 +109,7 @@ export default function AdminSongForm() {
   }
 
   function removeGlossaryEntry(index: number) {
-    setForm(prev => ({
-      ...prev,
-      glossary: prev.glossary.filter((_, i) => i !== index),
-    }));
+    setForm(prev => ({ ...prev, glossary: prev.glossary.filter((_, i) => i !== index) }));
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -136,15 +120,15 @@ export default function AdminSongForm() {
     const method = editId ? 'PUT' : 'POST';
     const body = editId ? { ...form, id: editId } : form;
 
-    const res = await fetch('/api/admin/songs', {
+    const res = await fetch('/api/admin/folk-songs', {
       method,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
 
     if (res.ok) {
-      setMessage(editId ? 'Song updated!' : 'Song created!');
-      setTimeout(() => router.push('/admin/songs'), 1000);
+      setMessage(editId ? 'Folk song updated!' : 'Folk song created!');
+      setTimeout(() => router.push('/admin/folk-songs'), 1000);
     } else {
       const data = await res.json();
       setMessage(`Error: ${data.error}`);
@@ -156,8 +140,8 @@ export default function AdminSongForm() {
     <div className="admin-page">
       <div className="admin-page-header">
         <div>
-          <h1>{editId ? 'Edit Song' : 'Add New Song'}</h1>
-          <p>{editId ? 'Update song details' : 'Add a new song to the archive'}</p>
+          <h1>{editId ? 'Edit Folk Song' : 'Add New Folk Song'}</h1>
+          <p>{editId ? 'Update folk song details' : 'Add a new folk song to the archive'}</p>
         </div>
       </div>
 
@@ -179,16 +163,11 @@ export default function AdminSongForm() {
               <input type="text" value={form.slug} onChange={e => update('slug', e.target.value)} required />
             </div>
             <div className="admin-form-field">
-              <label>Region</label>
-              <input type="text" value={form.region} onChange={e => update('region', e.target.value)} placeholder="e.g. Garhwal, Kumaon" />
-            </div>
-            <div className="admin-form-field">
-              <label>District</label>
-              <input type="text" value={form.district} onChange={e => update('district', e.target.value)} placeholder="e.g. Tehri Garhwal" />
-            </div>
-            <div className="admin-form-field">
-              <label>Occasion</label>
-              <input type="text" value={form.occasion} onChange={e => update('occasion', e.target.value)} placeholder="e.g. Wedding, Harvest, Holi" />
+              <label>Category</label>
+              <select value={form.category} onChange={e => update('category', e.target.value)}>
+                <option value="bajuband">Bajuband</option>
+                <option value="thadya">Thadya</option>
+              </select>
             </div>
           </div>
         </div>
@@ -216,7 +195,7 @@ export default function AdminSongForm() {
             <div className="admin-upload-area">
               {form.image && (
                 <div className="admin-upload-preview">
-                  <img src={form.image} alt="Song preview" />
+                  <img src={form.image} alt="Preview" />
                 </div>
               )}
               <div className="admin-upload-controls">
@@ -255,7 +234,7 @@ export default function AdminSongForm() {
           </div>
           <div className="admin-form-field" style={{ marginTop: '12px' }}>
             <label>Excerpt / Short Description</label>
-            <input type="text" value={form.excerpt} onChange={e => update('excerpt', e.target.value)} placeholder="One-line description of the song" />
+            <input type="text" value={form.excerpt} onChange={e => update('excerpt', e.target.value)} placeholder="One-line description" />
           </div>
         </div>
 
@@ -279,49 +258,27 @@ export default function AdminSongForm() {
         {/* Glossary */}
         <div className="admin-form-section">
           <h3>Glossary of Pahadi Terms</h3>
-          <p style={{ fontSize: '13px', color: 'var(--card-stats)', marginBottom: '20px' }}>
-            Add words that cannot be directly translated. Each entry shows the Pahadi word, how to pronounce it, and a descriptive meaning.
-          </p>
-
           {form.glossary.map((entry, i) => (
             <div key={i} className="glossary-entry-editor">
               <div className="admin-form-grid" style={{ gridTemplateColumns: '1fr 1fr 2fr auto' }}>
                 <div className="admin-form-field">
                   <label>Pahadi Word</label>
-                  <input
-                    type="text"
-                    value={entry.word}
-                    onChange={e => updateGlossaryEntry(i, 'word', e.target.value)}
-                    placeholder="e.g. काफल"
-                  />
+                  <input type="text" value={entry.word} onChange={e => updateGlossaryEntry(i, 'word', e.target.value)} placeholder="e.g. काफल" />
                 </div>
                 <div className="admin-form-field">
                   <label>Transliteration</label>
-                  <input
-                    type="text"
-                    value={entry.transliteration}
-                    onChange={e => updateGlossaryEntry(i, 'transliteration', e.target.value)}
-                    placeholder="e.g. Kafal"
-                  />
+                  <input type="text" value={entry.transliteration} onChange={e => updateGlossaryEntry(i, 'transliteration', e.target.value)} placeholder="e.g. Kafal" />
                 </div>
                 <div className="admin-form-field">
-                  <label>Meaning / Description</label>
-                  <input
-                    type="text"
-                    value={entry.meaning}
-                    onChange={e => updateGlossaryEntry(i, 'meaning', e.target.value)}
-                    placeholder="e.g. A wild berry found in the Himalayan hills, ripens in spring"
-                  />
+                  <label>Meaning</label>
+                  <input type="text" value={entry.meaning} onChange={e => updateGlossaryEntry(i, 'meaning', e.target.value)} placeholder="Description" />
                 </div>
                 <div className="admin-form-field" style={{ justifyContent: 'flex-end' }}>
-                  <button type="button" onClick={() => removeGlossaryEntry(i)} className="admin-btn-sm btn-danger">
-                    Remove
-                  </button>
+                  <button type="button" onClick={() => removeGlossaryEntry(i)} className="admin-btn-sm btn-danger">Remove</button>
                 </div>
               </div>
             </div>
           ))}
-
           <button type="button" onClick={addGlossaryEntry} className="admin-btn-secondary" style={{ marginTop: '8px' }}>
             + Add Word
           </button>
@@ -331,8 +288,7 @@ export default function AdminSongForm() {
         <div className="admin-form-section">
           <h3>Cultural Context</h3>
           <div className="admin-form-field">
-            <label>Cultural Context & Background</label>
-            <textarea rows={6} value={form.cultural_context} onChange={e => update('cultural_context', e.target.value)} placeholder="When is this song sung? What is its significance?" />
+            <textarea rows={6} value={form.cultural_context} onChange={e => update('cultural_context', e.target.value)} placeholder="When is this song traditionally sung? What is its significance?" />
           </div>
         </div>
 
@@ -355,7 +311,7 @@ export default function AdminSongForm() {
                   onChange={e => update('featured', e.target.checked)}
                   style={{ width: '16px', height: '16px' }}
                 />
-                Featured Song (shown on homepage)
+                Featured (shown on homepage)
               </label>
             </div>
           </div>
@@ -364,9 +320,9 @@ export default function AdminSongForm() {
         {/* Submit */}
         <div className="admin-form-actions">
           {message && <p className={message.startsWith('Error') ? 'admin-error' : 'admin-success'}>{message}</p>}
-          <button type="button" onClick={() => router.push('/admin/songs')} className="admin-btn-secondary">Cancel</button>
+          <button type="button" onClick={() => router.push('/admin/folk-songs')} className="admin-btn-secondary">Cancel</button>
           <button type="submit" disabled={saving} className="admin-btn-primary">
-            {saving ? 'Saving...' : (editId ? 'Update Song' : 'Create Song')}
+            {saving ? 'Saving...' : (editId ? 'Update Folk Song' : 'Create Folk Song')}
           </button>
         </div>
       </form>

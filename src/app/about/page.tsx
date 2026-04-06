@@ -1,5 +1,13 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import ScrollReveal from '@/components/ScrollReveal';
+
+export const metadata: Metadata = {
+  title: 'About Himalaya Folk — Preserving Himalayan Folk Songs',
+  description:
+    'Himalaya Folk is a community-built digital archive preserving Garhwali, Kumaoni, and Pahadi folk songs from Uttarakhand with trilingual lyrics, cultural context, and a glossary of untranslatable words.',
+  alternates: { canonical: 'https://himalayafolk.com/about' },
+};
 
 export default function AboutPage() {
   return (
@@ -13,7 +21,7 @@ export default function AboutPage() {
         />
         <div className="banner-content">
           <p className="tagline">Our Story</p>
-          <h1>About Pahadi Library</h1>
+          <h1>About Himalaya Folk</h1>
         </div>
       </section>
 
@@ -32,14 +40,14 @@ export default function AboutPage() {
               The songs of the Himalayas are not just entertainment. They are living repositories of history, ecology, spirituality, and the social bonds that hold mountain communities together. Nyoli carries the ache of separation across valleys. Jagar invocations connect communities to their ancestral deities. Mangal geet encode wedding rituals in melody.
             </p>
             <p>
-              Yet with migration accelerating and oral traditions fading, these songs risk being lost within a generation. Pahadi Library is my attempt to make sure that doesn&apos;t happen.
+              Yet with migration accelerating and oral traditions fading, these songs risk being lost within a generation. Himalaya Folk is my attempt to make sure that doesn&apos;t happen.
             </p>
           </div>
 
           {/* Coming Soon */}
           <ScrollReveal>
             <div style={{ marginTop: '72px', textAlign: 'center' }}>
-              <div className="mountain-divider">&#9650; &#9650; &#9650;</div>
+              <div style={{ textAlign: 'center', padding: '20px 0', color: 'var(--accent)', fontSize: '8px', letterSpacing: '12px', opacity: 0.5 }}>&#9650; &#9650; &#9650;</div>
               <h3 style={{ marginTop: '24px', marginBottom: '12px' }}>Blog & Field Notes</h3>
               <p style={{ fontSize: '14px', maxWidth: '480px', margin: '0 auto', color: 'var(--text)' }}>
                 Stories from the field, interviews with village elders, and the journeys behind each song. Coming soon.

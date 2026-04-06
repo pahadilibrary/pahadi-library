@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: 'Pahadi Library <onboarding@resend.dev>',
+          from: 'Himalaya Folk <onboarding@resend.dev>',
           to: adminEmail,
           subject: `New Song Submission: ${body.song_name}`,
           html: `
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
             <p><strong>Occasion:</strong> ${body.occasion || 'N/A'}</p>
             <p><strong>Email:</strong> ${body.email || 'Not provided'}</p>
             <br/>
-            <p>Review this submission in your <a href="https://pahadi-library.vercel.app/admin/submissions">admin dashboard</a>.</p>
+            <p>Review this submission in your <a href="https://himalayafolk.com/admin/submissions">admin dashboard</a>.</p>
           `,
         }),
       });

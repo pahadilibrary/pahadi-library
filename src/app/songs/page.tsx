@@ -77,6 +77,7 @@ export default function SongsPage() {
                   <h4>{song.title}</h4>
                   <p className="devanagari">{song.titleDevanagari}</p>
                   <p className="card-meta">{song.region}</p>
+                  <span className="card-read-link">Read →</span>
                 </div>
               </div>
             </Link>

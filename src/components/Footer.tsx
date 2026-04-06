@@ -29,7 +29,7 @@ export default function Footer() {
         <div className="footer-grid">
           {/* Left: About + nav */}
           <div>
-            <h4>Pahadi Library</h4>
+            <h4>Himalaya Folk</h4>
             <p style={{ fontSize: '15px', lineHeight: 1.75, marginBottom: '20px', color: 'rgba(255,255,255,0.7)' }}>
               A community-built digital archive preserving the songs and living culture of the Himalayas.
             </p>
@@ -66,7 +66,7 @@ export default function Footer() {
 
         <div className="footer-bottom">
           <span style={{ color: 'rgba(255,255,255,0.4)' }}>
-            Made with love in Uttarakhand &middot; &copy; 2026 Pahadi Library
+            Made with love in Uttarakhand &middot; &copy; 2026 Himalaya Folk
           </span>
           <div className="footer-social">
             <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">YouTube</a>

@@ -51,7 +51,7 @@ export default function AdminDashboard() {
     <div className="admin-page">
       <div className="admin-page-header">
         <h1>Dashboard</h1>
-        <p>Overview of your Pahadi Library</p>
+        <p>Overview of your Himalaya Folk</p>
       </div>
 
       <div className="admin-stats-grid">

@@ -54,7 +54,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return (
       <div className="admin-login-page">
         <div className="admin-login-box">
-          <h1>Pahadi Library</h1>
+          <h1>Himalaya Folk</h1>
           <p>Admin Dashboard</p>
           <form onSubmit={handleLogin}>
             <input
@@ -76,6 +76,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const navItems = [
     { href: '/admin', label: 'Dashboard', icon: '◉' },
     { href: '/admin/songs', label: 'Songs', icon: '♪' },
+    { href: '/admin/folk-songs', label: 'Folk Songs', icon: '♬' },
     { href: '/admin/submissions', label: 'Submissions', icon: '✉' },
     { href: '/admin/newsletter', label: 'Newsletter', icon: '◈' },
   ];
@@ -84,7 +85,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="admin-layout">
       <aside className="admin-sidebar">
         <div className="admin-sidebar-header">
-          <h2>Pahadi Library</h2>
+          <h2>Himalaya Folk</h2>
           <span>Admin Panel</span>
         </div>
         <nav className="admin-nav">

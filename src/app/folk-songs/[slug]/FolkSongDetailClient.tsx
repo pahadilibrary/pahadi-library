@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-export default function SongDetailClient({
+export default function FolkSongDetailClient({
   culturalContext,
 }: {
   culturalContext: string;

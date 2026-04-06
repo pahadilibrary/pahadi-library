@@ -3,13 +3,18 @@
 import { useState } from 'react';
 import ScrollReveal from '@/components/ScrollReveal';
 
+// Note: metadata must be in a separate layout or parent server component for client pages
+// For now, the root layout template handles the base SEO
+
 export default function ContributePage() {
   const [form, setForm] = useState({
     contributor_name: '',
     contributor_village: '',
     song_name: '',
     occasion: '',
-    lyrics: '',
+    lyrics_pahadi: '',
+    lyrics_hindi: '',
+    lyrics_english: '',
     cultural_context: '',
     youtube_link: '',
     email: '',
@@ -27,10 +32,27 @@ export default function ContributePage() {
     setSubmitting(true);
     setError('');
 
+    // Combine lyrics into a structured format for the API
+    const lyricsparts: string[] = [];
+    if (form.lyrics_pahadi.trim()) lyricsparts.push(`[PAHADI]\n${form.lyrics_pahadi.trim()}`);
+    if (form.lyrics_hindi.trim()) lyricsparts.push(`[HINDI]\n${form.lyrics_hindi.trim()}`);
+    if (form.lyrics_english.trim()) lyricsparts.push(`[ENGLISH]\n${form.lyrics_english.trim()}`);
+
+    const payload = {
+      contributor_name: form.contributor_name,
+      contributor_village: form.contributor_village,
+      song_name: form.song_name,
+      occasion: form.occasion,
+      lyrics: lyricsparts.join('\n\n'),
+      cultural_context: form.cultural_context,
+      youtube_link: form.youtube_link,
+      email: form.email,
+    };
+
     const res = await fetch('/api/submissions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
+      body: JSON.stringify(payload),
     });
 
     if (res.ok) {
@@ -63,7 +85,7 @@ export default function ContributePage() {
           <div className="contribute-guidelines">
             <h2>How to Contribute</h2>
             <p>
-              Pahadi Library is built by the community. If you know a Pahadi song — from your village, your family, or your own memory — we want to hear from you.
+              Himalaya Folk is built by the community. If you know a Pahadi song — from your village, your family, or your own memory — we want to hear from you.
             </p>
             <p style={{ marginTop: '12px' }}>You can contribute in two ways:</p>
             <ul>
@@ -86,7 +108,7 @@ export default function ContributePage() {
                 <h3 style={{ color: 'var(--accent)', marginBottom: '12px' }}>Thank You!</h3>
                 <p>Your song has been submitted successfully. We will review it and add it to the archive soon.</p>
                 <button
-                  onClick={() => { setSubmitted(false); setForm({ contributor_name: '', contributor_village: '', song_name: '', occasion: '', lyrics: '', cultural_context: '', youtube_link: '', email: '' }); }}
+                  onClick={() => { setSubmitted(false); setForm({ contributor_name: '', contributor_village: '', song_name: '', occasion: '', lyrics_pahadi: '', lyrics_hindi: '', lyrics_english: '', cultural_context: '', youtube_link: '', email: '' }); }}
                   className="btn-outline"
                   style={{ marginTop: '24px' }}
                 >
@@ -125,8 +147,21 @@ export default function ContributePage() {
                 </div>
 
                 <div className="form-field full-width" style={{ marginBottom: '16px' }}>
-                  <label>Lyrics (Pahadi / Devanagari)</label>
-                  <textarea rows={6} placeholder="Share the lyrics as you remember them..." value={form.lyrics} onChange={e => update('lyrics', e.target.value)} />
+                  <label>Lyrics in Pahadi *</label>
+                  <textarea rows={5} placeholder="पहाड़ी भाषा में गीत के बोल लिखें..." value={form.lyrics_pahadi} onChange={e => update('lyrics_pahadi', e.target.value)} required />
+                  <span style={{ fontSize: '12px', color: 'var(--text-light)', marginTop: '4px', display: 'block' }}>Original Pahadi / Garhwali / Kumaoni lyrics in Devanagari</span>
+                </div>
+
+                <div className="form-field full-width" style={{ marginBottom: '16px' }}>
+                  <label>Lyrics in Hindi (optional)</label>
+                  <textarea rows={5} placeholder="हिंदी अनुवाद या हिंदी में बोल लिखें..." value={form.lyrics_hindi} onChange={e => update('lyrics_hindi', e.target.value)} />
+                  <span style={{ fontSize: '12px', color: 'var(--text-light)', marginTop: '4px', display: 'block' }}>Hindi translation or transliteration</span>
+                </div>
+
+                <div className="form-field full-width" style={{ marginBottom: '16px' }}>
+                  <label>Lyrics in English (optional)</label>
+                  <textarea rows={5} placeholder="English translation of the song..." value={form.lyrics_english} onChange={e => update('lyrics_english', e.target.value)} />
+                  <span style={{ fontSize: '12px', color: 'var(--text-light)', marginTop: '4px', display: 'block' }}>English translation — poetic or literal</span>
                 </div>
 
                 <div className="form-field full-width" style={{ marginBottom: '16px' }}>

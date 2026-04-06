@@ -22,6 +22,7 @@ export default async function HomePage() {
           <p className="tagline">Echoes of the Himalayas</p>
           <h1>Songs of the<br />Himalayas</h1>
           <p>Preserving the music, oral traditions, and living culture of Uttarakhand&apos;s mountain communities.</p>
+          <Link href="/songs" className="hero-cta" style={{ marginTop: '24px' }}>Explore the Archive</Link>
         </div>
       </section>
 
@@ -29,7 +30,7 @@ export default async function HomePage() {
       <ScrollReveal>
         <section className="desc-section">
           <p>
-            From our motherland to you. Pahadi Library exists to collect every fragment of culture we can — translating every song for those who feel alienated from the culture they were born in, documenting every story for those who never heard of it. We preserve these songs before they fade from living memory.
+            From our motherland to you. Himalaya Folk exists to collect every fragment of culture we can — translating every song for those who feel alienated from the culture they were born in, documenting every story for those who never heard of it. We preserve these songs before they fade from living memory.
           </p>
         </section>
       </ScrollReveal>
@@ -49,6 +50,7 @@ export default async function HomePage() {
                     <h4>{song.title}</h4>
                     <p className="devanagari">{song.title_devanagari}</p>
                     <p className="card-meta">{song.region}</p>
+                    <span className="card-read-link">Read →</span>
                   </div>
                 </div>
               </Link>
@@ -87,6 +89,7 @@ export default async function HomePage() {
                     <h4>{song.title}</h4>
                     <p className="devanagari">{song.title_devanagari}</p>
                     <p className="card-meta">{song.region}</p>
+                    <span className="card-read-link">Read →</span>
                   </div>
                 </div>
               </Link>
@@ -95,8 +98,10 @@ export default async function HomePage() {
         </section>
       </ScrollReveal>
 
-      {/* Mountain divider */}
-      <div className="mountain-divider">&#9650; &#9650; &#9650;</div>
+      {/* Section divider */}
+      <div className="section-divider">
+        <span>&#9650;</span>
+      </div>
 
       {/* About Strip */}
       <ScrollReveal>
