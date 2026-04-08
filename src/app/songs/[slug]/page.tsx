@@ -58,6 +58,14 @@ export default async function SongDetailPage({
   const song = await getSongBySlug(slug);
   if (!song) notFound();
 
+  // Determine original language based on region
+  const regionLower = (song.region || '').toLowerCase();
+  const originalLang =
+    regionLower.includes('garhwal') ? 'Garhwali' :
+    regionLower.includes('kumaon') ? 'Kumaoni' :
+    regionLower.includes('jaunsar') ? 'Jaunsari' :
+    'Pahadi';
+
   // Get related songs (same occasion, excluding current)
   const allSongs = await getAllSongsFromDB();
   const related = allSongs
@@ -143,7 +151,7 @@ export default async function SongDetailPage({
           <div className="lyrics-columns">
             {song.lyrics_original && (
               <div className="lyrics-column">
-                <h3>Pahadi</h3>
+                <h3>{originalLang}</h3>
                 <div className="lyrics-text">{song.lyrics_original}</div>
               </div>
             )}
