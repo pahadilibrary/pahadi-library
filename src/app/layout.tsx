@@ -39,7 +39,7 @@ export const metadata: Metadata = {
       'Preserving Garhwali, Kumaoni & Pahadi folk songs with trilingual lyrics, cultural context, and a glossary of untranslatable Himalayan words.',
     images: [
       {
-        url: '/images/IMG_20251018_082751293 (3).jpg',
+        url: '/images/og-default.jpg',
         width: 1200,
         height: 630,
         alt: 'Himalaya Folk — Himalayan folk song archive',
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     title: 'Himalaya Folk — Songs & Cultural Archive of the Himalayas',
     description:
       'Preserving Garhwali, Kumaoni & Pahadi folk songs with trilingual lyrics, cultural context, and a glossary of untranslatable Himalayan words.',
-    images: ['/images/IMG_20251018_082751293 (3).jpg'],
+    images: ['/images/og-default.jpg'],
   },
   alternates: {
     canonical: siteUrl,
@@ -69,6 +69,34 @@ export const metadata: Metadata = {
   },
 };
 
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Himalaya Folk',
+  url: siteUrl,
+  description: 'A digital archive preserving the folk songs, oral traditions, and living culture of Uttarakhand.',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: `${siteUrl}/songs?q={search_term_string}`,
+    },
+    'query-input': 'required name=search_term_string',
+  },
+};
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Himalaya Folk',
+  url: siteUrl,
+  logo: `${siteUrl}/images/og-default.jpg`,
+  sameAs: [
+    'https://www.instagram.com/himalayafolk',
+    'https://www.youtube.com/@himalayafolk',
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -77,6 +105,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
         <LayoutShell>{children}</LayoutShell>
       </body>
     </html>

@@ -7,6 +7,21 @@ export const metadata: Metadata = {
   description:
     'Himalaya Folk is a community-built digital archive preserving Garhwali, Kumaoni, and Pahadi folk songs from Uttarakhand with trilingual lyrics, cultural context, and a glossary of untranslatable words.',
   alternates: { canonical: 'https://himalayafolk.com/about' },
+  openGraph: {
+    title: 'About Himalaya Folk — Preserving Himalayan Folk Songs',
+    description:
+      'Himalaya Folk is a community-built digital archive preserving Garhwali, Kumaoni, and Pahadi folk songs from Uttarakhand.',
+    url: 'https://himalayafolk.com/about',
+    type: 'website',
+    siteName: 'Himalaya Folk',
+    images: [{ url: 'https://himalayafolk.com/images/og-default.jpg', width: 1200, height: 630, alt: 'Himalaya Folk — About' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Himalaya Folk — Preserving Himalayan Folk Songs',
+    description: 'A community-built digital archive preserving Garhwali, Kumaoni, and Pahadi folk songs from Uttarakhand.',
+    images: ['https://himalayafolk.com/images/og-default.jpg'],
+  },
 };
 
 export default function AboutPage() {

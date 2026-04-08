@@ -8,6 +8,14 @@ export const dynamic = 'force-dynamic';
 
 const siteUrl = 'https://himalayafolk.com';
 
+function getOriginalLang(region: string) {
+  const r = (region || '').toLowerCase();
+  if (r.includes('garhwal')) return 'Garhwali';
+  if (r.includes('kumaon')) return 'Kumaoni';
+  if (r.includes('jaunsar')) return 'Jaunsari';
+  return 'Pahadi';
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -17,25 +25,35 @@ export async function generateMetadata({
   const song = await getSongBySlug(slug);
   if (!song) return {};
 
-  const title = `${song.title} (${song.title_devanagari}) — ${song.occasion} Song`;
-  const description = `${song.title} is a ${song.occasion.toLowerCase()} folk song from ${song.region}, ${song.district}. Read the original Pahadi lyrics, English & Hindi translations, cultural context, and glossary of untranslatable words.`;
+  const originalLang = getOriginalLang(song.region);
+  const title = `${song.title} lyrics in ${originalLang}, English & Hindi`;
+  const description = `${song.title} (${song.title_devanagari}) is a ${song.occasion.toLowerCase()} ${originalLang} folk song from ${song.region}, ${song.district}. Read the original ${originalLang} lyrics in Devanagari, English & Hindi translations, cultural context, and a glossary of untranslatable Himalayan words.`;
   const url = `${siteUrl}/songs/${slug}`;
 
   return {
     title,
     description,
     keywords: [
-      song.title, song.title_devanagari, `${song.title} lyrics`,
-      `${song.title} meaning`, `${song.title} translation`,
-      `${song.region} folk song`, `${song.occasion} song Uttarakhand`,
-      'Pahadi song lyrics', 'Garhwali folk song',
+      song.title,
+      song.title_devanagari,
+      `${song.title} lyrics`,
+      `${song.title} lyrics in ${originalLang}`,
+      `${song.title} meaning`,
+      `${song.title} translation`,
+      `${song.title} ${originalLang} lyrics`,
+      `${originalLang} ${song.occasion.toLowerCase()} song`,
+      `${song.region} folk song`,
+      `${song.occasion} song Uttarakhand`,
+      `${originalLang} folk song lyrics`,
+      'Uttarakhand folk music',
+      'Himalayan folk song',
     ],
     openGraph: {
       title,
       description,
       url,
       type: 'article',
-      images: song.image ? [{ url: song.image, width: 1200, height: 630, alt: song.title }] : [],
+      images: song.image ? [{ url: song.image, width: 1200, height: 630, alt: `${song.title} — ${originalLang} folk song` }] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -58,13 +76,8 @@ export default async function SongDetailPage({
   const song = await getSongBySlug(slug);
   if (!song) notFound();
 
-  // Determine original language based on region
-  const regionLower = (song.region || '').toLowerCase();
-  const originalLang =
-    regionLower.includes('garhwal') ? 'Garhwali' :
-    regionLower.includes('kumaon') ? 'Kumaoni' :
-    regionLower.includes('jaunsar') ? 'Jaunsari' :
-    'Pahadi';
+  // Determine original language based on region (shared helper above)
+  const originalLang = getOriginalLang(song.region);
 
   // Get related songs (same occasion, excluding current)
   const allSongs = await getAllSongsFromDB();
@@ -73,18 +86,22 @@ export default async function SongDetailPage({
     .slice(0, 3);
 
   // JSON-LD structured data for search engines
+  // ISO 639-3 language codes for Himalayan languages
+  const langCode = originalLang === 'Garhwali' ? 'gbm' : originalLang === 'Kumaoni' ? 'kfy' : originalLang === 'Jaunsari' ? 'jns' : 'hi';
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'MusicComposition',
     name: song.title,
     alternateName: song.title_devanagari,
-    description: song.cultural_context || `A ${song.occasion.toLowerCase()} folk song from ${song.region}, Uttarakhand.`,
-    genre: 'Folk',
+    description: song.cultural_context || `A ${song.occasion.toLowerCase()} ${originalLang} folk song from ${song.region}, Uttarakhand.`,
+    genre: `${originalLang} Folk`,
     musicalKey: song.occasion,
+    inLanguage: langCode,
     lyrics: song.lyrics_original ? {
       '@type': 'CreativeWork',
       text: song.lyrics_original,
-      inLanguage: 'hi',
+      inLanguage: langCode,
     } : undefined,
     image: song.image,
     contributor: {

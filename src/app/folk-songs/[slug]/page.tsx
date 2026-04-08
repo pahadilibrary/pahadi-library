@@ -23,16 +23,23 @@ export async function generateMetadata({
   if (!song) return {};
 
   const catLabel = CATEGORY_LABELS[song.category] || song.category;
-  const title = `${song.title} (${song.title_devanagari}) — ${catLabel} Folk Song`;
-  const description = `${song.title} is a ${catLabel} folk song from the Himalayas. Read the original Pahadi lyrics, English and Hindi translations.`;
+  const title = `${song.title} lyrics in Garhwali, English & Hindi — ${catLabel}`;
+  const description = `${song.title} (${song.title_devanagari}) is a ${catLabel} Garhwali folk song from Uttarakhand. Read the original Garhwali lyrics in Devanagari, English & Hindi translations, and cultural context.`;
   const url = `${siteUrl}/folk-songs/${slug}`;
 
   return {
     title,
     description,
     keywords: [
-      song.title, song.title_devanagari, `${song.title} lyrics`,
-      `${catLabel} folk song`, 'Pahadi folk song', 'Garhwali folk song',
+      song.title,
+      song.title_devanagari,
+      `${song.title} lyrics`,
+      `${song.title} lyrics in Garhwali`,
+      `${song.title} meaning`,
+      `${catLabel} song`,
+      `${catLabel} Garhwali folk song`,
+      'Garhwali folk song lyrics',
+      'Uttarakhand folk music',
       'Himalayan oral tradition',
     ],
     openGraph: {
@@ -70,12 +77,13 @@ export default async function FolkSongDetailPage({
     '@type': 'MusicComposition',
     name: song.title,
     alternateName: song.title_devanagari,
-    description: song.cultural_context || `A ${catLabel} folk song from the Himalayas.`,
-    genre: `Himalayan Folk — ${catLabel}`,
+    description: song.cultural_context || `A ${catLabel} Garhwali folk song from Uttarakhand.`,
+    genre: `Garhwali Folk — ${catLabel}`,
+    inLanguage: 'gbm',
     lyrics: song.lyrics_original ? {
       '@type': 'CreativeWork',
       text: song.lyrics_original,
-      inLanguage: 'hi',
+      inLanguage: 'gbm',
     } : undefined,
     image: song.image,
     contributor: {
