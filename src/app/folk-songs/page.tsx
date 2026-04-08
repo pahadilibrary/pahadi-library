@@ -17,15 +17,15 @@ interface FolkSongMeta {
 const CATEGORIES = [
   {
     key: 'bajuband',
-    label: 'Bajuband',
     devanagari: 'बाजूबंद',
-    description: 'Devotional and ceremonial songs tied to the sacred thread tradition of Garhwal.',
+    label: 'Bajuband',
+    description: 'Devotional and ceremonial songs tied to the sacred thread tradition of Garhwal — sung at rites of passage, in temples, and around the hearth.',
   },
   {
     key: 'thadya',
-    label: 'Thadya',
     devanagari: 'थड्या',
-    description: 'Communal dance songs sung in open courtyards during festivals and celebrations.',
+    label: 'Thadya',
+    description: 'Communal dance songs sung in open courtyards during festivals and celebrations — voices and footsteps moving as one.',
   },
 ];
 
@@ -46,32 +46,36 @@ export default function FolkSongsPage() {
     songs.filter(s => s.category === key);
 
   return (
-    <>
-      {/* Banner */}
-      <section className="songs-page-banner">
+    <div className="folk-page">
+      {/* Atmospheric Banner */}
+      <section className="folk-banner">
         <img
           src="/images/IMG_20251018_082751293 (3).jpg"
-          alt="Himalayan mountains"
-          style={{ objectPosition: 'center 60%' }}
+          alt="Himalayan mountains at dusk"
+          style={{ objectPosition: 'center 50%' }}
         />
-        <div className="songs-page-banner-content">
-          <h1>लोक गीत</h1>
-          <p>Folk Songs of the Himalayas</p>
+        <div className="folk-banner-content">
+          <h1 className="devanagari-title">लोक गीत</h1>
+          <p className="english-sub">Songs of the Living Tradition</p>
         </div>
       </section>
 
-      {/* Intro */}
-      <div className="folk-intro">
+      {/* Epigraph */}
+      <div className="folk-epigraph">
         <p>
-          These are the songs that were never recorded in studios. Passed down through generations,
-          sung at festivals, in courtyards, on mountain paths — the living voice of the Himalayas.
+          &ldquo;These are the songs that were never recorded in studios.
+          Passed mouth to ear, generation to generation —
+          the breath of the mountains, still moving.&rdquo;
         </p>
+        <span className="attribution">— from the archive</span>
       </div>
+
+      <div className="folk-divider">▲ ▲ ▲</div>
 
       {/* Category Sections */}
       {loading ? (
         <div style={{ padding: '80px 40px', textAlign: 'center' }}>
-          <p style={{ fontSize: '14px', color: 'var(--text)' }}>Loading...</p>
+          <p style={{ fontSize: '14px', color: '#8B6F3D', fontStyle: 'italic' }}>Loading the archive...</p>
         </div>
       ) : (
         CATEGORIES.map(cat => {
@@ -79,16 +83,14 @@ export default function FolkSongsPage() {
           return (
             <section key={cat.key} className="folk-category-section">
               <div className="folk-category-header">
-                <div>
-                  <span className="section-label">{cat.devanagari}</span>
-                  <h2 style={{ marginTop: '4px', marginBottom: '8px' }}>{cat.label}</h2>
-                  <p className="folk-category-desc">{cat.description}</p>
-                </div>
+                <span className="devanagari-label">{cat.devanagari}</span>
+                <span className="english-label">{cat.label}</span>
+                <p className="folk-category-desc">{cat.description}</p>
               </div>
 
               {catSongs.length === 0 ? (
                 <div className="folk-empty">
-                  <p>Songs coming soon.</p>
+                  <p>Songs coming to this section soon.</p>
                 </div>
               ) : (
                 <div className="folk-scroll-row">
@@ -115,6 +117,8 @@ export default function FolkSongsPage() {
           );
         })
       )}
-    </>
+
+      <div style={{ height: '60px' }} />
+    </div>
   );
 }

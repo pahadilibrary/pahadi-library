@@ -36,8 +36,13 @@ export default function AboutPage() {
             <p>
               I wanted to build a single platform where anyone could find all this information — the lyrics in Devanagari, translations in English and Hindi, the cultural stories behind each song, and proper credits to the people and villages that keep these traditions alive.
             </p>
+
+            <blockquote className="about-pullquote">
+              &ldquo;These songs are living repositories of history, ecology, and the bonds that hold mountain communities together — and they risk being lost within a generation.&rdquo;
+            </blockquote>
+
             <p>
-              The songs of the Himalayas are not just entertainment. They are living repositories of history, ecology, spirituality, and the social bonds that hold mountain communities together. Nyoli carries the ache of separation across valleys. Jagar invocations connect communities to their ancestral deities. Mangal geet encode wedding rituals in melody.
+              The songs of the Himalayas are not just entertainment. Nyoli carries the ache of separation across valleys. Jagar invocations connect communities to their ancestral deities. Mangal geet encode wedding rituals in melody.
             </p>
             <p>
               Yet with migration accelerating and oral traditions fading, these songs risk being lost within a generation. Himalaya Folk is my attempt to make sure that doesn&apos;t happen.

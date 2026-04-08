@@ -101,12 +101,12 @@ export default async function FolkSongDetailPage({
   };
 
   return (
-    <>
+    <div className="folk-page">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
       {/* Banner */}
-      <section className="song-detail-banner">
+      <section className="song-detail-banner folk-detail-banner">
         <img src={song.image} alt={song.title} />
         <div className="song-detail-banner-content">
           <span className="occasion-label">{catLabel}</span>
@@ -224,6 +224,6 @@ export default async function FolkSongDetailPage({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
