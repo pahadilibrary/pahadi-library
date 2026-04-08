@@ -122,14 +122,15 @@ export default async function SongDetailPage({
 
       {/* Body */}
       <div className="song-detail-body">
-        {/* Meta strip */}
+        {/* Meta strip — only show filled fields */}
         <div className="song-meta-strip">
           {[
+            { label: 'Artist', value: song.artist },
             { label: 'Region', value: song.region },
             { label: 'District', value: song.district },
             { label: 'Occasion', value: song.occasion },
-            { label: 'Contributor', value: `${song.contributor_name}, ${song.contributor_village}` },
-          ].map((item) => (
+            { label: 'Contributor', value: [song.contributor_name, song.contributor_village].filter(Boolean).join(', ') },
+          ].filter(item => item.value?.trim()).map((item) => (
             <div key={item.label} className="meta-item">
               <p className="meta-label">{item.label}</p>
               <p className="meta-value">{item.value}</p>

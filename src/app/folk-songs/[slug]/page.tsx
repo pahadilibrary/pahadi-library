@@ -122,8 +122,8 @@ export default async function FolkSongDetailPage({
           {[
             { label: 'Type', value: catLabel },
             { label: 'Tradition', value: 'Garhwali Folk' },
-            { label: 'Contributor', value: `${song.contributor_name}${song.contributor_village ? `, ${song.contributor_village}` : ''}` },
-          ].filter(item => item.value && item.value !== ', ').map(item => (
+            { label: 'Contributor', value: [song.contributor_name, song.contributor_village].filter(Boolean).join(', ') },
+          ].filter(item => item.value?.trim()).map(item => (
             <div key={item.label} className="meta-item">
               <p className="meta-label">{item.label}</p>
               <p className="meta-value">{item.value}</p>

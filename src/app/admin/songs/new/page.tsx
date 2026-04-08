@@ -13,6 +13,7 @@ interface SongForm {
   title: string;
   title_devanagari: string;
   slug: string;
+  artist: string;
   region: string;
   district: string;
   occasion: string;
@@ -34,6 +35,7 @@ const emptyForm: SongForm = {
   title: '',
   title_devanagari: '',
   slug: '',
+  artist: '',
   region: '',
   district: '',
   occasion: '',
@@ -71,6 +73,7 @@ export default function AdminSongForm() {
               title: song.title || '',
               title_devanagari: song.title_devanagari || '',
               slug: song.slug || '',
+              artist: song.artist || '',
               region: song.region || '',
               district: song.district || '',
               occasion: song.occasion || '',
@@ -173,6 +176,10 @@ export default function AdminSongForm() {
             <div className="admin-form-field">
               <label>Title (Devanagari)</label>
               <input type="text" value={form.title_devanagari} onChange={e => update('title_devanagari', e.target.value)} />
+            </div>
+            <div className="admin-form-field">
+              <label>Artist / Singer</label>
+              <input type="text" value={form.artist} onChange={e => update('artist', e.target.value)} placeholder="e.g. Narendra Singh Negi" />
             </div>
             <div className="admin-form-field">
               <label>URL Slug</label>

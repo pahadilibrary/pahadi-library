@@ -3,6 +3,7 @@ export interface Song {
   slug: string;
   title: string;
   title_devanagari: string;
+  artist: string;
   region: string;
   district: string;
   occasion: string;
