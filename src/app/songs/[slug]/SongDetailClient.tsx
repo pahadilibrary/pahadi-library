@@ -5,8 +5,12 @@ import styles from './SongDetailClient.module.css';
 
 export default function SongDetailClient({
   culturalContext,
+  songTitle,
+  audioUrl,
 }: {
   culturalContext: string;
+   songTitle: string;
+  audioUrl: string;
 }) {
   const [contextOpen, setContextOpen] = useState<boolean>(false);
 

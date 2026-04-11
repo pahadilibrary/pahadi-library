@@ -209,7 +209,11 @@ export default async function SongDetailPage({
 
         {/* Cultural Context — collapsible */}
         {song.cultural_context && (
-          <SongDetailClient culturalContext={song.cultural_context} />
+          <SongDetailClient
+            culturalContext={song.cultural_context}
+            songTitle={song.title}
+            audioUrl={song.audio_url}
+          />
         )}
 
         {/* Related Songs */}
