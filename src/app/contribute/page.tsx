@@ -66,13 +66,13 @@ export default function ContributePage() {
   return (
     <>
       {/* Banner */}
-      <section className={styles.insetBanner}>
+      <section className="inset-banner">
         <img
           src="/images/IMG_20250412_151357706.jpg"
           alt="Himalayan village with prayer flags"
         />
-        <div className={styles.bannerContent}>
-          <p className={styles.tagline}>Share Your Knowledge</p>
+        <div className="banner-content">
+          <p className="tagline">Share Your Knowledge</p>
           <h1>Contribute a Song</h1>
         </div>
       </section>

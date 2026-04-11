@@ -61,6 +61,7 @@ export default function AdminSongForm() {
   const [form, setForm] = useState<SongForm>(emptyForm);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
+  const [fromSubmissionId, setFromSubmissionId] = useState<string | null>(null);
 
   useEffect(() => {
     if (editId) {
@@ -92,6 +93,43 @@ export default function AdminSongForm() {
             });
           }
         });
+    } else {
+      // Pre-fill from submission if coming from submissions page
+      const submissionId = searchParams.get('from_submission');
+      const rawLyrics = searchParams.get('lyrics_raw') || '';
+
+      // Parse [PAHADI]/[HINDI]/[ENGLISH] blocks from raw lyrics
+      let lyrics_original = '';
+      let lyrics_hindi = '';
+      let lyrics_english = '';
+      const pahadiMatch = rawLyrics.match(/\[PAHADI\]\n([\s\S]*?)(?=\n\n\[|$)/);
+      const hindiMatch = rawLyrics.match(/\[HINDI\]\n([\s\S]*?)(?=\n\n\[|$)/);
+      const englishMatch = rawLyrics.match(/\[ENGLISH\]\n([\s\S]*?)(?=\n\n\[|$)/);
+      if (pahadiMatch) lyrics_original = pahadiMatch[1].trim();
+      if (hindiMatch) lyrics_hindi = hindiMatch[1].trim();
+      if (englishMatch) lyrics_english = englishMatch[1].trim();
+      // If no blocks, put everything in original
+      if (!lyrics_original && !lyrics_hindi && !lyrics_english && rawLyrics) {
+        lyrics_original = rawLyrics;
+      }
+
+      if (submissionId) {
+        setFromSubmissionId(submissionId);
+        const title = searchParams.get('title') || '';
+        const slug = title.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
+        setForm(prev => ({
+          ...prev,
+          title,
+          slug,
+          occasion: searchParams.get('occasion') || '',
+          contributor_name: searchParams.get('contributor_name') || '',
+          contributor_village: searchParams.get('contributor_village') || '',
+          cultural_context: searchParams.get('cultural_context') || '',
+          lyrics_original,
+          lyrics_hindi,
+          lyrics_english,
+        }));
+      }
     }
   }, [editId]);
 
@@ -146,8 +184,16 @@ export default function AdminSongForm() {
     });
 
     if (res.ok) {
+      // If published from a submission, mark it as approved
+      if (fromSubmissionId) {
+        await fetch('/api/admin/submissions', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: fromSubmissionId, status: 'approved', admin_notes: 'Published to archive.' }),
+        });
+      }
       setMessage(editId ? 'Song updated!' : 'Song created!');
-      setTimeout(() => router.push('/admin/songs'), 1000);
+      setTimeout(() => router.push(fromSubmissionId ? '/admin/submissions' : '/admin/songs'), 1000);
     } else {
       const data = await res.json();
       setMessage(`Error: ${data.error}`);
@@ -159,8 +205,8 @@ export default function AdminSongForm() {
     <div className="admin-page">
       <div className="admin-page-header">
         <div>
-          <h1>{editId ? 'Edit Song' : 'Add New Song'}</h1>
-          <p>{editId ? 'Update song details' : 'Add a new song to the archive'}</p>
+          <h1>{editId ? 'Edit Song' : fromSubmissionId ? 'Publish Submission to Archive' : 'Add New Song'}</h1>
+          <p>{editId ? 'Update song details' : fromSubmissionId ? 'Review, complete, and publish the submitted song' : 'Add a new song to the archive'}</p>
         </div>
       </div>
 
@@ -371,9 +417,9 @@ export default function AdminSongForm() {
         {/* Submit */}
         <div className="admin-form-actions">
           {message && <p className={message.startsWith('Error') ? 'admin-error' : 'admin-success'}>{message}</p>}
-          <button type="button" onClick={() => router.push('/admin/songs')} className="admin-btn-secondary">Cancel</button>
+          <button type="button" onClick={() => router.push(fromSubmissionId ? '/admin/submissions' : '/admin/songs')} className="admin-btn-secondary">Cancel</button>
           <button type="submit" disabled={saving} className="admin-btn-primary">
-            {saving ? 'Saving...' : (editId ? 'Update Song' : 'Create Song')}
+            {saving ? 'Saving...' : editId ? 'Update Song' : fromSubmissionId ? 'Publish to Archive' : 'Create Song'}
           </button>
         </div>
       </form>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface Submission {
   id: string;
@@ -18,6 +19,7 @@ interface Submission {
 }
 
 export default function AdminSubmissionsPage() {
+  const router = useRouter();
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -35,7 +37,6 @@ export default function AdminSubmissionsPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, status, admin_notes: admin_notes || '' }),
     });
-
     if (res.ok) {
       setSubmissions(submissions.map(s => s.id === id ? { ...s, status, admin_notes: admin_notes || s.admin_notes } : s));
     }
@@ -43,16 +44,28 @@ export default function AdminSubmissionsPage() {
 
   async function deleteSubmission(id: string) {
     if (!confirm('Delete this submission permanently?')) return;
-
     const res = await fetch('/api/admin/submissions', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id }),
     });
-
     if (res.ok) {
       setSubmissions(submissions.filter(s => s.id !== id));
     }
+  }
+
+  function publishToArchive(sub: Submission) {
+    // Build query params from submission data to pre-fill the song form
+    const params = new URLSearchParams({
+      from_submission: sub.id,
+      title: sub.song_name,
+      occasion: sub.occasion || '',
+      contributor_name: sub.contributor_name || '',
+      contributor_village: sub.contributor_village || '',
+      cultural_context: sub.cultural_context || '',
+      lyrics_raw: sub.lyrics || '',
+    });
+    router.push(`/admin/songs/new?${params.toString()}`);
   }
 
   const filtered = filter === 'all' ? submissions : submissions.filter(s => s.status === filter);
@@ -66,17 +79,25 @@ export default function AdminSubmissionsPage() {
           <h1>Submissions</h1>
           <p>{submissions.filter(s => s.status === 'pending').length} pending review</p>
         </div>
-        <div className="admin-filter-tabs">
-          {['all', 'pending', 'approved', 'rejected'].map(f => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`admin-filter-tab ${filter === f ? 'active' : ''}`}
-            >
-              {f.charAt(0).toUpperCase() + f.slice(1)}
-              {f !== 'all' && ` (${submissions.filter(s => s.status === f).length})`}
-            </button>
-          ))}
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <div className="admin-filter-tabs">
+            {['all', 'pending', 'approved', 'rejected'].map(f => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`admin-filter-tab ${filter === f ? 'active' : ''}`}
+              >
+                {f.charAt(0).toUpperCase() + f.slice(1)}
+                {f !== 'all' && ` (${submissions.filter(s => s.status === f).length})`}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={() => router.push('/admin/songs/new')}
+            className="admin-btn-primary"
+          >
+            + Add Song
+          </button>
         </div>
       </div>
 
@@ -133,16 +154,28 @@ export default function AdminSubmissionsPage() {
                 )}
 
                 <div className="admin-submission-actions">
+                  {/* Publish to Archive — opens full song form pre-filled */}
+                  <button
+                    onClick={() => publishToArchive(sub)}
+                    className="admin-btn-primary"
+                    style={{ background: 'var(--accent)', borderColor: 'var(--accent)' }}
+                  >
+                    Publish to Archive →
+                  </button>
+
                   {sub.status === 'pending' && (
-                    <>
-                      <button onClick={() => updateStatus(sub.id, 'approved')} className="admin-btn-primary">Approve</button>
-                      <button onClick={() => updateStatus(sub.id, 'rejected')} className="admin-btn-secondary">Reject</button>
-                    </>
+                    <button onClick={() => updateStatus(sub.id, 'rejected')} className="admin-btn-secondary">
+                      Reject
+                    </button>
                   )}
                   {sub.status !== 'pending' && (
-                    <button onClick={() => updateStatus(sub.id, 'pending')} className="admin-btn-secondary">Reset to Pending</button>
+                    <button onClick={() => updateStatus(sub.id, 'pending')} className="admin-btn-secondary">
+                      Reset to Pending
+                    </button>
                   )}
-                  <button onClick={() => deleteSubmission(sub.id)} className="admin-btn-sm btn-danger">Delete</button>
+                  <button onClick={() => deleteSubmission(sub.id)} className="admin-btn-sm btn-danger">
+                    Delete
+                  </button>
                 </div>
               </div>
             )}
