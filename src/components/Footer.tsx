@@ -2,38 +2,54 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import styles from './Footer.module.css';
 
 export default function Footer() {
-  const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
+  const [email, setEmail] = useState<string>('');
+  const [subscribed, setSubscribed] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
 
-  async function handleSubscribe(e: React.FormEvent) {
+  async function handleSubscribe(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!email) return;
+    setError('');
 
-    const res = await fetch('/api/newsletter', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    });
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Please enter a valid email');
+      return;
+    }
 
-    if (res.ok) {
-      setSubscribed(true);
-      setEmail('');
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      if (res.ok) {
+        setSubscribed(true);
+        setEmail('');
+        setTimeout(() => setSubscribed(false), 4000);
+      } else {
+        setError('Something went wrong. Please try again.');
+      }
+    } catch {
+      setError('Network error. Please try again.');
     }
   }
 
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="site-footer">
-      <div className="footer-inner">
-        <div className="footer-grid">
-          {/* Left: About + nav */}
-          <div>
-            <h4>Himalaya Folk</h4>
-            <p style={{ fontSize: '15px', lineHeight: 1.75, marginBottom: '20px', color: 'rgba(255,255,255,0.7)' }}>
-              A community-built digital archive preserving the songs and living culture of the Himalayas.
+    <footer className={styles.footer}>
+      <div className={styles.footerContainer}>
+        <div className={styles.footerGrid}>
+          {/* Left Section: About */}
+          <div className={styles.footerSection}>
+            <h3>Pahadi Library</h3>
+            <p>
+              A community-built digital archive preserving the songs and living culture of the Himalayas. Celebrating the musical heritage of the mountains.
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div className={styles.footerLinks}>
               <Link href="/">Home</Link>
               <Link href="/songs">Songs</Link>
               <Link href="/about">About</Link>
@@ -41,37 +57,62 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Right: Subscribe */}
-          <div className="footer-subscribe">
-            <h4>Stay Connected</h4>
-            <p style={{ fontSize: '15px', lineHeight: 1.75, marginBottom: '14px', color: 'rgba(255,255,255,0.7)' }}>
-              Get updates on new songs and cultural stories from the Himalayas.
+          {/* Right Section: Subscribe */}
+          <div className={styles.footerSection}>
+            <h3>Stay Connected</h3>
+            <p>
+              Get updates on new songs and cultural stories from the Himalayas. Join our growing community.
             </p>
-            {subscribed ? (
-              <p style={{ color: 'var(--accent)', fontSize: '14px' }}>Thank you for subscribing!</p>
-            ) : (
-              <form onSubmit={handleSubscribe}>
-                <input
-                  type="email"
-                  placeholder="Email Address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-                <button type="submit">Submit</button>
-              </form>
-            )}
+            <div className={styles.subscribeBox}>
+              {subscribed ? (
+                <p className={`${styles.statusMessage} ${styles.success}`}>
+                  ✓ Thank you for subscribing! Check your inbox.
+                </p>
+              ) : (
+                <form className={styles.subscribeForm} onSubmit={handleSubscribe}>
+                  <input
+                    type="email"
+                    placeholder="your@email.com"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setError('');
+                    }}
+                    required
+                  />
+                  {error && <p className={`${styles.statusMessage} ${styles.error}`}>{error}</p>}
+                  <button type="submit">Subscribe</button>
+                </form>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="footer-bottom">
-          <span style={{ color: 'rgba(255,255,255,0.4)' }}>
-            Made with love in Uttarakhand &middot; &copy; 2026 Himalaya Folk
-          </span>
-          <div className="footer-social">
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">YouTube</a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a>
+        {/* Bottom Section */}
+        <div className={styles.footerBottom}>
+          <div>
+            <span className={styles.footerCopyright}>
+              Made with ❤️ in Uttarakhand • © {currentYear} Pahadi Library
+            </span>
+            <div className={styles.footerContactSpacing}>
+              <a 
+                href="mailto:connect@pahadilibrary.com"
+                className={styles.footerContactEmail}
+              >
+                connect@pahadilibrary.com
+              </a>
+            </div>
+          </div>
+          <div className={styles.footerSocial}>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+              YouTube
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+              Instagram
+            </a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+              Twitter
+            </a>
           </div>
         </div>
       </div>

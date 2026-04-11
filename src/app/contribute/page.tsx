@@ -2,9 +2,8 @@
 
 import { useState } from 'react';
 import ScrollReveal from '@/components/ScrollReveal';
+import styles from './page.module.css';
 
-// Note: metadata must be in a separate layout or parent server component for client pages
-// For now, the root layout template handles the base SEO
 
 export default function ContributePage() {
   const [form, setForm] = useState({
@@ -67,32 +66,31 @@ export default function ContributePage() {
   return (
     <>
       {/* Banner */}
-      <section className="inset-banner" style={{ height: '320px' }}>
+      <section className={styles.insetBanner}>
         <img
           src="/images/IMG_20250412_151357706.jpg"
           alt="Himalayan village with prayer flags"
-          style={{ objectPosition: 'center 50%' }}
         />
-        <div className="banner-content">
-          <p className="tagline">Share Your Knowledge</p>
+        <div className={styles.bannerContent}>
+          <p className={styles.tagline}>Share Your Knowledge</p>
           <h1>Contribute a Song</h1>
         </div>
       </section>
 
-      <div className="contribute-body">
+      <div className={styles.contributeBody}>
         {/* Guidelines */}
         <ScrollReveal>
-          <div className="contribute-guidelines">
+          <div className={styles.contributeGuidelines}>
             <h2>How to Contribute</h2>
             <p>
               Himalaya Folk is built by the community. If you know a Pahadi song — from your village, your family, or your own memory — we want to hear from you.
             </p>
-            <p style={{ marginTop: '12px' }}>You can contribute in two ways:</p>
+            <p>You can contribute in two ways:</p>
             <ul>
               <li><strong>Submit a new song</strong> — share original lyrics, translations, and any cultural context you know.</li>
               <li><strong>Correct an existing translation</strong> — if you find a mistake in any song on the archive, submit a correction with your reasoning and a proper reference.</li>
             </ul>
-            <p style={{ marginTop: '12px' }}>
+            <p>
               Please provide clear reasons and references when suggesting corrections. All contributions are credited to you with your name and village.
             </p>
           </div>
@@ -100,37 +98,67 @@ export default function ContributePage() {
 
         {/* Form */}
         <ScrollReveal>
-          <div className="contribute-form">
+          <div className={styles.contributeForm}>
             <h2>Submit a Song</h2>
 
             {submitted ? (
-              <div style={{ padding: '40px 0', textAlign: 'center' }}>
-                <h3 style={{ color: 'var(--accent)', marginBottom: '12px' }}>Thank You!</h3>
+              <div className={styles.successMessage}>
+                <h3>Thank You!</h3>
                 <p>Your song has been submitted successfully. We will review it and add it to the archive soon.</p>
                 <button
-                  onClick={() => { setSubmitted(false); setForm({ contributor_name: '', contributor_village: '', song_name: '', occasion: '', lyrics_pahadi: '', lyrics_hindi: '', lyrics_english: '', cultural_context: '', youtube_link: '', email: '' }); }}
-                  className="btn-outline"
-                  style={{ marginTop: '24px' }}
+                  onClick={() => { 
+                    setSubmitted(false); 
+                    setForm({ 
+                      contributor_name: '', 
+                      contributor_village: '', 
+                      song_name: '', 
+                      occasion: '', 
+                      lyrics_pahadi: '',
+                      lyrics_hindi: '',
+                      lyrics_english: '',
+                      cultural_context: '', 
+                      youtube_link: '', 
+                      email: '' 
+                    }); 
+                  }}
+                  className={styles.buttonOutline}
                 >
                   Submit Another Song
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
-                <div className="form-grid">
-                  <div className="form-field">
+                <div className={styles.formGrid}>
+                  <div className={styles.formField}>
                     <label>Your Name *</label>
-                    <input type="text" placeholder="Full name" value={form.contributor_name} onChange={e => update('contributor_name', e.target.value)} required />
+                    <input 
+                      type="text" 
+                      placeholder="Full name" 
+                      value={form.contributor_name} 
+                      onChange={e => update('contributor_name', e.target.value)} 
+                      required 
+                    />
                   </div>
-                  <div className="form-field">
+                  <div className={styles.formField}>
                     <label>Village / Town</label>
-                    <input type="text" placeholder="Where are you from?" value={form.contributor_village} onChange={e => update('contributor_village', e.target.value)} />
+                    <input 
+                      type="text" 
+                      placeholder="Where are you from?" 
+                      value={form.contributor_village} 
+                      onChange={e => update('contributor_village', e.target.value)} 
+                    />
                   </div>
-                  <div className="form-field">
+                  <div className={styles.formField}>
                     <label>Song Name *</label>
-                    <input type="text" placeholder="Name of the song" value={form.song_name} onChange={e => update('song_name', e.target.value)} required />
+                    <input 
+                      type="text" 
+                      placeholder="Name of the song" 
+                      value={form.song_name} 
+                      onChange={e => update('song_name', e.target.value)} 
+                      required 
+                    />
                   </div>
-                  <div className="form-field">
+                  <div className={styles.formField}>
                     <label>Occasion</label>
                     <select value={form.occasion} onChange={e => update('occasion', e.target.value)}>
                       <option value="">Select an occasion</option>
@@ -146,43 +174,70 @@ export default function ContributePage() {
                   </div>
                 </div>
 
-                <div className="form-field full-width" style={{ marginBottom: '16px' }}>
+                <div className={`${styles.formField} ${styles.formFieldFullWidth}`}>
                   <label>Lyrics in Pahadi *</label>
-                  <textarea rows={5} placeholder="पहाड़ी भाषा में गीत के बोल लिखें..." value={form.lyrics_pahadi} onChange={e => update('lyrics_pahadi', e.target.value)} required />
-                  <span style={{ fontSize: '12px', color: 'var(--text-light)', marginTop: '4px', display: 'block' }}>Original Pahadi / Garhwali / Kumaoni lyrics in Devanagari</span>
+                  <textarea 
+                    rows={6} 
+                    placeholder="पहाड़ी भाषा में गीत के बोल लिखें..." 
+                    value={form.lyrics_pahadi} 
+                    onChange={e => update('lyrics_pahadi', e.target.value)} 
+                  />
                 </div>
 
-                <div className="form-field full-width" style={{ marginBottom: '16px' }}>
+                <div className={`${styles.formField} ${styles.formFieldFullWidth}`}>
                   <label>Lyrics in Hindi (optional)</label>
-                  <textarea rows={5} placeholder="हिंदी अनुवाद या हिंदी में बोल लिखें..." value={form.lyrics_hindi} onChange={e => update('lyrics_hindi', e.target.value)} />
-                  <span style={{ fontSize: '12px', color: 'var(--text-light)', marginTop: '4px', display: 'block' }}>Hindi translation or transliteration</span>
+                  <textarea 
+                    rows={4} 
+                    placeholder="हिंदी अनुवाद या हिंदी में बोल लिखें..." 
+                    value={form.lyrics_hindi} 
+                    onChange={e => update('lyrics_hindi', e.target.value)} 
+                  />
                 </div>
 
-                <div className="form-field full-width" style={{ marginBottom: '16px' }}>
+                <div className={`${styles.formField} ${styles.formFieldFullWidth}`}>
                   <label>Lyrics in English (optional)</label>
-                  <textarea rows={5} placeholder="English translation of the song..." value={form.lyrics_english} onChange={e => update('lyrics_english', e.target.value)} />
-                  <span style={{ fontSize: '12px', color: 'var(--text-light)', marginTop: '4px', display: 'block' }}>English translation — poetic or literal</span>
+                  <textarea 
+                    rows={4} 
+                    placeholder="English translation of this song ..." 
+                    value={form.lyrics_english} 
+                    onChange={e => update('lyrics_english', e.target.value)} 
+                  />
                 </div>
 
-                <div className="form-field full-width" style={{ marginBottom: '16px' }}>
+                <div className={`${styles.formField} ${styles.formFieldFullWidth}`}>
                   <label>Cultural Context / Notes</label>
-                  <textarea rows={4} placeholder="When is this song traditionally sung? Any stories behind it?" value={form.cultural_context} onChange={e => update('cultural_context', e.target.value)} />
+                  <textarea 
+                    rows={4} 
+                    placeholder="When is this song traditionally sung? Any stories behind it?" 
+                    value={form.cultural_context} 
+                    onChange={e => update('cultural_context', e.target.value)} 
+                  />
                 </div>
 
-                <div className="form-field full-width" style={{ marginBottom: '16px' }}>
+                <div className={`${styles.formField} ${styles.formFieldFullWidth}`}>
                   <label>YouTube Link (optional)</label>
-                  <input type="url" placeholder="https://youtube.com/..." value={form.youtube_link} onChange={e => update('youtube_link', e.target.value)} />
+                  <input 
+                    type="url" 
+                    placeholder="https://youtube.com/..." 
+                    value={form.youtube_link} 
+                    onChange={e => update('youtube_link', e.target.value)} 
+                  />
                 </div>
 
-                <div className="form-field full-width" style={{ marginBottom: '24px' }}>
+                <div className={`${styles.formField} ${styles.formFieldFullWidth}`}>
                   <label>Email (optional — for follow-up)</label>
-                  <input type="email" placeholder="your@email.com" value={form.email} onChange={e => update('email', e.target.value)} />
+                  <input 
+                    type="email" 
+                    placeholder="your@email.com" 
+                    value={form.email} 
+                    onChange={e => update('email', e.target.value)} 
+                  />
                 </div>
 
-                {error && <p style={{ color: '#d32f2f', fontSize: '14px', textAlign: 'center', marginBottom: '16px' }}>{error}</p>}
+                {error && <p className={styles.errorMessage}>{error}</p>}
 
-                <div style={{ textAlign: 'center' }}>
-                  <button type="submit" className="btn-filled" disabled={submitting}>
+                <div className={styles.submitContainer}>
+                  <button type="submit" className={styles.buttonFilled} disabled={submitting}>
                     {submitting ? 'Submitting...' : 'Submit Song'}
                   </button>
                 </div>

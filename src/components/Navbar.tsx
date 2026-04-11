@@ -22,6 +22,8 @@ export default function Navbar() {
 
   return (
     <header>
+
+      {/* Main nav */}
       <nav className="main-nav">
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           {/* Nanda Devi mountain silhouette */}
