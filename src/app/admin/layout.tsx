@@ -78,6 +78,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { href: '/admin/songs', label: 'Songs', icon: '♪' },
     { href: '/admin/folk-songs', label: 'Folk Songs', icon: '♬' },
     { href: '/admin/submissions', label: 'Submissions', icon: '✉' },
+    { href: '/admin/import', label: 'Import Song', icon: '↓' },
     { href: '/admin/newsletter', label: 'Newsletter', icon: '◈' },
   ];
 

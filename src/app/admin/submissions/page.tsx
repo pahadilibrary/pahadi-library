@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import SubmissionPublishForm from './SubmissionPublishForm';
 
 interface Submission {
   id: string;
@@ -23,6 +24,7 @@ export default function AdminSubmissionsPage() {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [publishingId, setPublishingId] = useState<string | null>(null);
   const [filter, setFilter] = useState<string>('all');
 
   useEffect(() => {
@@ -51,21 +53,8 @@ export default function AdminSubmissionsPage() {
     });
     if (res.ok) {
       setSubmissions(submissions.filter(s => s.id !== id));
+      if (publishingId === id) setPublishingId(null);
     }
-  }
-
-  function publishToArchive(sub: Submission) {
-    // Build query params from submission data to pre-fill the song form
-    const params = new URLSearchParams({
-      from_submission: sub.id,
-      title: sub.song_name,
-      occasion: sub.occasion || '',
-      contributor_name: sub.contributor_name || '',
-      contributor_village: sub.contributor_village || '',
-      cultural_context: sub.cultural_context || '',
-      lyrics_raw: sub.lyrics || '',
-    });
-    router.push(`/admin/songs/new?${params.toString()}`);
   }
 
   const filtered = filter === 'all' ? submissions : submissions.filter(s => s.status === filter);
@@ -79,7 +68,7 @@ export default function AdminSubmissionsPage() {
           <h1>Submissions</h1>
           <p>{submissions.filter(s => s.status === 'pending').length} pending review</p>
         </div>
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
           <div className="admin-filter-tabs">
             {['all', 'pending', 'approved', 'rejected'].map(f => (
               <button
@@ -92,10 +81,7 @@ export default function AdminSubmissionsPage() {
               </button>
             ))}
           </div>
-          <button
-            onClick={() => router.push('/admin/songs/new')}
-            className="admin-btn-primary"
-          >
+          <button onClick={() => router.push('/admin/songs/new')} className="admin-btn-primary">
             + Add Song
           </button>
         </div>
@@ -104,10 +90,18 @@ export default function AdminSubmissionsPage() {
       <div className="admin-submissions-list">
         {filtered.map(sub => (
           <div key={sub.id} className={`admin-submission-card ${sub.status}`}>
-            <div className="admin-submission-header" onClick={() => setExpandedId(expandedId === sub.id ? null : sub.id)}>
+            {/* Header — always visible */}
+            <div
+              className="admin-submission-header"
+              onClick={() => {
+                if (publishingId === sub.id) return; // don't collapse while form is open
+                setExpandedId(expandedId === sub.id ? null : sub.id);
+                setPublishingId(null);
+              }}
+            >
               <div>
                 <h3>{sub.song_name}</h3>
-                <p>by {sub.contributor_name} {sub.contributor_village && `from ${sub.contributor_village}`}</p>
+                <p>by {sub.contributor_name}{sub.contributor_village && ` from ${sub.contributor_village}`}</p>
                 <p className="admin-submission-date">
                   {new Date(sub.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                 </p>
@@ -116,11 +110,12 @@ export default function AdminSubmissionsPage() {
                 <span className={`admin-badge ${sub.status === 'pending' ? 'badge-orange' : sub.status === 'approved' ? 'badge-green' : 'badge-gray'}`}>
                   {sub.status}
                 </span>
-                <span className="admin-expand-icon">{expandedId === sub.id ? '▲' : '▼'}</span>
+                <span className="admin-expand-icon">{(expandedId === sub.id || publishingId === sub.id) ? '▲' : '▼'}</span>
               </div>
             </div>
 
-            {expandedId === sub.id && (
+            {/* Submission detail view */}
+            {expandedId === sub.id && publishingId !== sub.id && (
               <div className="admin-submission-body">
                 {sub.occasion && (
                   <div className="admin-submission-field">
@@ -154,29 +149,42 @@ export default function AdminSubmissionsPage() {
                 )}
 
                 <div className="admin-submission-actions">
-                  {/* Publish to Archive — opens full song form pre-filled */}
                   <button
-                    onClick={() => publishToArchive(sub)}
+                    onClick={() => { setPublishingId(sub.id); setExpandedId(null); }}
                     className="admin-btn-primary"
-                    style={{ background: 'var(--accent)', borderColor: 'var(--accent)' }}
                   >
                     Publish to Archive →
                   </button>
-
                   {sub.status === 'pending' && (
-                    <button onClick={() => updateStatus(sub.id, 'rejected')} className="admin-btn-secondary">
-                      Reject
-                    </button>
+                    <button onClick={() => updateStatus(sub.id, 'rejected')} className="admin-btn-secondary">Reject</button>
                   )}
                   {sub.status !== 'pending' && (
-                    <button onClick={() => updateStatus(sub.id, 'pending')} className="admin-btn-secondary">
-                      Reset to Pending
-                    </button>
+                    <button onClick={() => updateStatus(sub.id, 'pending')} className="admin-btn-secondary">Reset to Pending</button>
                   )}
-                  <button onClick={() => deleteSubmission(sub.id)} className="admin-btn-sm btn-danger">
-                    Delete
-                  </button>
+                  <button onClick={() => deleteSubmission(sub.id)} className="admin-btn-sm btn-danger">Delete</button>
                 </div>
+              </div>
+            )}
+
+            {/* Inline publish form */}
+            {publishingId === sub.id && (
+              <div style={{ padding: '0 24px 24px' }}>
+                <SubmissionPublishForm
+                  submissionId={sub.id}
+                  initialData={{
+                    title: sub.song_name,
+                    occasion: sub.occasion,
+                    contributor_name: sub.contributor_name,
+                    contributor_village: sub.contributor_village,
+                    cultural_context: sub.cultural_context,
+                    lyrics_original: sub.lyrics,
+                  }}
+                  onSuccess={() => {
+                    setSubmissions(prev => prev.map(s => s.id === sub.id ? { ...s, status: 'approved' } : s));
+                    setPublishingId(null);
+                  }}
+                  onCancel={() => { setPublishingId(null); setExpandedId(sub.id); }}
+                />
               </div>
             )}
           </div>
