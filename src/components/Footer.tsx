@@ -45,7 +45,7 @@ export default function Footer() {
         <div className={styles.footerGrid}>
           {/* Left Section: About */}
           <div className={styles.footerSection}>
-            <h3>Pahadi Library</h3>
+            <h3>Himalaya Folk</h3>
             <p>
               A community-built digital archive preserving the songs and living culture of the Himalayas. Celebrating the musical heritage of the mountains.
             </p>
@@ -92,7 +92,7 @@ export default function Footer() {
         <div className={styles.footerBottom}>
           <div>
             <span className={styles.footerCopyright}>
-              Made with ❤️ in Uttarakhand • © {currentYear} Pahadi Library
+              Made with ❤️ in Uttarakhand • © {currentYear} Himalaya Folk
             </span>
             <div className={styles.footerContactSpacing}>
               <a 
