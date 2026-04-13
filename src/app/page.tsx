@@ -146,14 +146,8 @@ export default async function HomePage() {
           <div>
             <span className="section-label">About the Archive</span>
             <h2 style={{ marginBottom: '18px' }}>Why This Archive?</h2>
-            <p style={{ marginBottom: '16px' }}>
-              I was born in Garhwal, and I have watched the youth grow distant from the culture they came from — including myself. I am not someone who can single-handedly revive what is fading, but I can offer this generation a glimpse of Garhwali, Kumaoni, and Himalayan culture through a native eye.
-            </p>
-            <p style={{ marginBottom: '16px' }}>
-              I have seen people struggle to understand the lyrics of the songs they grew up hearing. I struggle with them too. That is where this archive begins — with translation and context. But it will not stop there. My curiosity stretches across the broader Himalayas, which is why it is called Himalaya Folk, not just Garhwal Folk.
-            </p>
             <p style={{ marginBottom: '24px' }}>
-              I want to show people the richness of our folk songs, the folklore and stories we can carry with us. And I want to share my own experience of the Garhwal Himalayas — my motherland — with anyone willing to listen.
+              I was born in Garhwal, and I have watched the youth grow distant from the culture they came from — including myself. I am not someone who can single-handedly revive what is fading, but I can offer this generation a glimpse of Garhwali, Kumaoni, and Himalayan culture through a native eye.
             </p>
             <Link href="/about" className="btn-outline">Read More</Link>
           </div>

@@ -46,21 +46,13 @@ export default function AboutPage() {
           <div className="about-story">
             <h2>Why I Built This</h2>
             <p>
-              I always wanted to know the lyrics of Pahadi music — the songs I grew up hearing in my village in Tehri Garhwal. But there was no website, no place where I could find a decent translation, or even the original lyrics written down properly.
+              I was born in Garhwal, and I have watched the youth grow distant from the culture they came from — including myself. I am not someone who can single-handedly revive what is fading, but I can offer this generation a glimpse of Garhwali, Kumaoni, and Himalayan culture through a native eye.
             </p>
             <p>
-              I wanted to build a single platform where anyone could find all this information — the lyrics in Devanagari, translations in English and Hindi, the cultural stories behind each song, and proper credits to the people and villages that keep these traditions alive.
-            </p>
-
-            <blockquote className="about-pullquote">
-              &ldquo;These songs are living repositories of history, ecology, and the bonds that hold mountain communities together — and they risk being lost within a generation.&rdquo;
-            </blockquote>
-
-            <p>
-              The songs of the Himalayas are not just entertainment. Nyoli carries the ache of separation across valleys. Jagar invocations connect communities to their ancestral deities. Mangal geet encode wedding rituals in melody.
+              I have seen people struggle to understand the lyrics of the songs they grew up hearing. I struggle with them too. That is where this archive begins — with translation and context. But it will not stop there. My curiosity stretches across the broader Himalayas, which is why it is called Himalaya Folk, not just Garhwal Folk.
             </p>
             <p>
-              Yet with migration accelerating and oral traditions fading, these songs risk being lost within a generation. Himalaya Folk is my attempt to make sure that doesn&apos;t happen.
+              I want to show people the richness of our folk songs, the folklore and stories we can carry with us. And I want to share my own experience of the Garhwal Himalayas — my motherland — with anyone willing to listen.
             </p>
           </div>
 
