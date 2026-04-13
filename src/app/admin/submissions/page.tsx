@@ -155,6 +155,23 @@ export default function AdminSubmissionsPage() {
                   >
                     Publish to Archive →
                   </button>
+                  <button
+                    onClick={() => {
+                      const params = new URLSearchParams({
+                        from_submission: sub.id,
+                        title: sub.song_name,
+                        occasion: sub.occasion || '',
+                        contributor_name: sub.contributor_name || '',
+                        contributor_village: sub.contributor_village || '',
+                        cultural_context: sub.cultural_context || '',
+                        lyrics_raw: sub.lyrics || '',
+                      });
+                      router.push(`/admin/songs/new?${params.toString()}`);
+                    }}
+                    className="admin-btn-secondary"
+                  >
+                    Open in Editor
+                  </button>
                   {sub.status === 'pending' && (
                     <button onClick={() => updateStatus(sub.id, 'rejected')} className="admin-btn-secondary">Reject</button>
                   )}
