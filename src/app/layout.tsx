@@ -1,7 +1,39 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
+import { Cormorant_Garamond, Source_Serif_4, Inter, Tiro_Devanagari_Hindi } from 'next/font/google';
 import './globals.css';
 import LayoutShell from '@/components/LayoutShell';
+
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-display',
+  display: 'swap',
+});
+
+const sourceSerif = Source_Serif_4({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-body',
+  display: 'swap',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600'],
+  variable: '--font-ui',
+  display: 'swap',
+});
+
+const tiroDevanagari = Tiro_Devanagari_Hindi({
+  subsets: ['devanagari', 'latin'],
+  weight: ['400'],
+  style: ['normal', 'italic'],
+  variable: '--font-devanagari',
+  display: 'swap',
+});
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -104,7 +136,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${cormorant.variable} ${sourceSerif.variable} ${inter.variable} ${tiroDevanagari.variable}`}>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />

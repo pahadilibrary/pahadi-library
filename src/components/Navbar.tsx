@@ -25,16 +25,14 @@ export default function Navbar() {
 
       {/* Main nav */}
       <nav className="main-nav">
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          {/* Nanda Devi mountain silhouette */}
-          <svg width="30" height="26" viewBox="0 0 40 35" fill="none">
-            <path d="M20 3L5 32h30L20 3z" fill="none" stroke="#555555" strokeWidth="1.5"/>
-            <path d="M20 10L12 32h16L20 10z" fill="none" stroke="#FC7B03" strokeWidth="1" opacity="0.7"/>
-            <path d="M17 32l3-8 3 8" fill="none" stroke="#555555" strokeWidth="0.8"/>
+        <Link href="/" style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }} className="nav-wordmark">
+          {/* Subtle peak mark */}
+          <svg width="22" height="20" viewBox="0 0 40 35" fill="none" style={{ alignSelf: 'center' }}>
+            <path d="M20 6L6 30h28L20 6z" fill="none" stroke="var(--ink)" strokeWidth="1.2"/>
+            <path d="M20 14L13 30h14L20 14z" fill="none" stroke="var(--terracotta)" strokeWidth="1" opacity="0.8"/>
           </svg>
-          <span style={{ fontFamily: 'var(--font-heading)', fontSize: '21px', fontWeight: 400, letterSpacing: '-0.5px' }}>
-            <span style={{ color: '#FC7B03' }}>Himalaya</span>
-            <span style={{ color: '#555555' }}>Folk</span>
+          <span style={{ fontFamily: 'var(--font-display)', fontSize: '24px', fontStyle: 'italic', fontWeight: 500, letterSpacing: '-0.02em', color: 'var(--ink)', lineHeight: 1 }}>
+            Himalaya Folk
           </span>
         </Link>
 

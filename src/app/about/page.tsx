@@ -35,7 +35,7 @@ export default function AboutPage() {
           style={{ objectPosition: 'center 50%' }}
         />
         <div className="banner-content">
-          <p className="tagline">Our Story</p>
+          <p className="tagline">Our story</p>
           <h1>About Himalaya Folk</h1>
         </div>
       </section>
@@ -44,7 +44,8 @@ export default function AboutPage() {
       <ScrollReveal>
         <div className="about-body">
           <div className="about-story">
-            <h2>Why I Built This</h2>
+            <span className="article-number">A note from the founder</span>
+            <h2>Why I built this</h2>
             <p>
               I was born in Garhwal, and I have watched the youth grow distant from the culture they came from — including myself. I am not someone who can single-handedly revive what is fading, but I can offer this generation a glimpse of Garhwali, Kumaoni, and Himalayan culture through a native eye.
             </p>
@@ -54,24 +55,37 @@ export default function AboutPage() {
             <p>
               I want to show people the richness of our folk songs, the folklore and stories we can carry with us. And I want to share my own experience of the Garhwal Himalayas — my motherland — with anyone willing to listen.
             </p>
+
+            <blockquote className="pull-quote" style={{ margin: '48px 0' }}>
+              These songs are not entertainment. They are how a place remembers itself.
+              <cite>— from the field</cite>
+            </blockquote>
+
+            <p style={{ marginTop: '32px' }}>
+              This is a slow project. New songs land each week, with their lyrics in Devanagari, translations in English and Hindi, and the stories that hold them in place.
+            </p>
           </div>
+
+          {/* Ornament */}
+          <div className="ornament" style={{ margin: '72px auto 56px' }}><span>❦</span></div>
 
           {/* Coming Soon */}
           <ScrollReveal>
-            <div style={{ marginTop: '72px', textAlign: 'center' }}>
-              <div style={{ textAlign: 'center', padding: '20px 0', color: 'var(--accent)', fontSize: '8px', letterSpacing: '12px', opacity: 0.5 }}>&#9650; &#9650; &#9650;</div>
-              <h3 style={{ marginTop: '24px', marginBottom: '12px' }}>Blog & Field Notes</h3>
-              <p style={{ fontSize: '14px', maxWidth: '480px', margin: '0 auto', color: 'var(--text)' }}>
-                Stories from the field, interviews with village elders, and the journeys behind each song. Coming soon.
+            <div style={{ maxWidth: 'var(--reading-width)', margin: '0 auto', textAlign: 'center' }}>
+              <span className="article-number" style={{ justifyContent: 'center' }}>Coming next</span>
+              <h3 style={{ marginTop: '8px', marginBottom: '14px', fontFamily: 'var(--font-display)', fontSize: '28px', fontStyle: 'italic', fontWeight: 400, letterSpacing: '-0.015em', color: 'var(--ink)' }}>Field notes</h3>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '16px', maxWidth: '500px', margin: '0 auto', color: 'var(--ink-soft)', lineHeight: 1.7 }}>
+                Stories from the field, interviews with village elders, and the small journeys behind each song. Soon.
               </p>
             </div>
           </ScrollReveal>
 
           {/* Advisors placeholder */}
           <ScrollReveal>
-            <div style={{ marginTop: '56px', textAlign: 'center' }}>
-              <h3 style={{ marginBottom: '12px' }}>Advisors & Cultural Elders</h3>
-              <p style={{ fontSize: '14px', maxWidth: '480px', margin: '0 auto', color: 'var(--text)' }}>
+            <div style={{ maxWidth: 'var(--reading-width)', margin: '64px auto 0', textAlign: 'center' }}>
+              <span className="article-number" style={{ justifyContent: 'center' }}>In conversation with</span>
+              <h3 style={{ marginTop: '8px', marginBottom: '14px', fontFamily: 'var(--font-display)', fontSize: '28px', fontStyle: 'italic', fontWeight: 400, letterSpacing: '-0.015em', color: 'var(--ink)' }}>Advisors & cultural elders</h3>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '16px', maxWidth: '500px', margin: '0 auto', color: 'var(--ink-soft)', lineHeight: 1.7 }}>
                 We are building relationships with cultural elders and academic institutions across Uttarakhand. More details coming soon.
               </p>
             </div>

@@ -1,37 +1,81 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,500;1,6..12,300;1,6..12,400&family=Poppins:wght@200;300;400;700&family=Raleway:wght@300;400;500&display=swap');
 @import "tailwindcss";
 
 /* ============================================
    DESIGN SYSTEM — Himalaya Folk
-   1:1 match with zedtells.com
+   "The Field Journal of the Himalayas"
+   editorial · paper · earth · warm ink
    ============================================ */
 
 :root {
-  --white: #ffffff;
-  --text: #555555;
-  --text-nav: #444444;
-  --text-dark: #1B1B1B;
-  --accent: #FC7B03;
-  --accent-hover: #D4660A;
-  --card-bg: #1B1B1B;
-  --card-stats: rgba(255, 255, 255, 0.45);
-  --footer-bg: #1B1B1B;
-  --border: rgba(170, 170, 170, 0.3);
+  /* Paper & ink */
+  --paper: #F8F4EC;
+  --paper-deep: #F0EAD9;
+  --paper-warm: #FAF6EE;
+  --white: #FFFEFB;
 
-  --font-heading: 'Raleway', sans-serif;
-  --font-nav: 'Poppins', sans-serif;
-  --font-body: 'Nunito Sans', sans-serif;
+  /* Ink scale — warm, never pure black */
+  --ink: #2A1F0F;
+  --ink-soft: #5A4A36;
+  --ink-faint: #8A7A60;
+  --ink-rule: #D8CFB8;
 
-  --content-width: 1030px;
+  /* Earth accents */
+  --terracotta: #A85528;
+  --terracotta-deep: #803D1A;
+  --terracotta-soft: #C77A4F;
+  --gold: #B8893E;
+  --gold-soft: #D9B473;
+
+  /* Legacy aliases — keep existing classes working */
+  --text: var(--ink-soft);
+  --text-nav: var(--ink);
+  --text-dark: var(--ink);
+  --accent: var(--terracotta);
+  --accent-hover: var(--terracotta-deep);
+  --card-bg: #1F160A;
+  --card-stats: rgba(248, 244, 236, 0.55);
+  --footer-bg: #1F160A;
+  --border: var(--ink-rule);
+  --bg: var(--paper);
+
+  /* Typography stack */
+  --font-display: var(--font-display, 'Cormorant Garamond'), 'EB Garamond', Georgia, serif;
+  --font-body: var(--font-body, 'Source Serif 4'), 'Source Serif Pro', Georgia, serif;
+  --font-ui: var(--font-ui, 'Inter'), -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-devanagari: var(--font-devanagari, 'Tiro Devanagari Hindi'), 'Hind', serif;
+
+  /* Legacy font aliases */
+  --font-heading: var(--font-display);
+  --font-nav: var(--font-ui);
+
+  /* Layout */
+  --content-width: 1080px;
+  --reading-width: 680px;
   --narrow-width: 720px;
+  --margin-width: 940px;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
 }
 
 @theme inline {
   --color-white: var(--white);
+  --color-paper: var(--paper);
   --color-text: var(--text);
-  --color-text-dark: var(--text-dark);
+  --color-text-dark: var(--ink);
+  --color-ink: var(--ink);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
+  --color-terracotta: var(--terracotta);
+  --color-gold: var(--gold);
   --color-footer-bg: var(--footer-bg);
   --color-border: var(--border);
 }
@@ -51,27 +95,44 @@ html {
 }
 
 body {
-  background: var(--white);
-  color: var(--text);
+  background: var(--paper);
+  color: var(--ink-soft);
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: 16px;
-  line-height: 1.75;
+  font-size: 17px;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+
+  /* Subtle paper grain — barely there */
+  background-image:
+    radial-gradient(circle at 25% 15%, rgba(168, 85, 40, 0.012) 0%, transparent 50%),
+    radial-gradient(circle at 75% 85%, rgba(184, 137, 62, 0.012) 0%, transparent 50%);
+  background-attachment: fixed;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  color: var(--text);
+  font-family: var(--font-display);
+  color: var(--ink);
   font-weight: 400;
-  line-height: 1.375;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
 }
 
-h1 { font-size: 36px; }
-h2 { font-size: 25px; }
-h3 { font-size: 20px; }
-h4 { font-size: 18px; }
+h1 { font-size: 48px; font-weight: 400; letter-spacing: -0.02em; }
+h2 { font-size: 32px; font-weight: 400; letter-spacing: -0.015em; }
+h3 { font-size: 22px; font-weight: 500; }
+h4 { font-size: 18px; font-weight: 500; }
+
+/* Devanagari script — get the right typeface */
+.devanagari,
+[lang="hi"],
+[lang="sa"] {
+  font-family: var(--font-devanagari);
+  font-weight: 400;
+}
 
 a {
   color: inherit;
@@ -89,106 +150,277 @@ img {
 }
 
 ::selection {
-  background: rgba(252, 123, 3, 0.15);
-  color: var(--text-dark);
+  background: rgba(168, 85, 40, 0.15);
+  color: var(--ink);
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #f8f8f8; }
-::-webkit-scrollbar-thumb { background: rgba(170,170,170,0.4); }
-::-webkit-scrollbar-thumb:hover { background: var(--text); }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--paper-deep); }
+::-webkit-scrollbar-thumb { background: var(--ink-rule); }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
 
 /* ============================================
-   SECTION LABEL — tiny uppercase
+   SECTION LABEL — tiny uppercase, editorial
    ============================================ */
 
 .section-label {
-  font-family: var(--font-heading);
-  font-size: 11px;
-  font-weight: 400;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--accent);
-  display: block;
-  margin-bottom: 8px;
+  letter-spacing: 0.18em;
+  color: var(--terracotta);
+  display: inline-block;
+  margin-bottom: 12px;
+  position: relative;
+  padding-left: 24px;
+}
+
+.section-label::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 16px;
+  height: 1px;
+  background: var(--terracotta);
 }
 
 /* ============================================
-   SECTION HEADING — Raleway 400, with rule
+   SECTION HEADING — display serif, editorial
    ============================================ */
 
 .section-heading {
-  font-family: var(--font-heading);
-  font-size: 25px;
+  font-family: var(--font-display);
+  font-size: 38px;
   font-weight: 400;
-  color: var(--text);
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 50px;
+  font-style: italic;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--ink-rule);
+  margin-bottom: 56px;
 }
 
 /* ============================================
-   BUTTONS — sharp corners, zedtells style
+   BUTTONS — refined editorial
    ============================================ */
 
 .btn-outline {
-  display: inline-block;
-  font-family: var(--font-heading);
-  font-size: 13px;
-  font-weight: 400;
-  letter-spacing: 0.5px;
-  padding: 10px 32px;
-  border: 1px solid var(--accent);
-  color: #000000;
-  background: var(--white);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  background: transparent;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
   border-radius: 0;
 }
 
 .btn-outline:hover {
-  background: var(--accent);
-  color: var(--white);
+  background: var(--ink);
+  color: var(--paper);
 }
 
 .btn-outline-white, .hero-cta {
-  display: inline-block;
-  font-family: var(--font-heading);
-  font-size: 13px;
-  font-weight: 400;
-  letter-spacing: 0.5px;
-  padding: 10px 32px;
-  border: 1px solid rgba(255,255,255,0.7);
-  color: rgba(255,255,255,0.9);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  border: 1px solid rgba(255,255,255,0.65);
+  color: rgba(255,255,255,0.95);
   background: transparent;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
   border-radius: 0;
 }
 
 .btn-outline-white:hover, .hero-cta:hover {
-  background: rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.1);
   color: #ffffff;
+  border-color: rgba(255,255,255,0.95);
 }
 
 .btn-filled {
-  display: inline-block;
-  font-family: var(--font-heading);
-  font-size: 13px;
-  font-weight: 400;
-  letter-spacing: 0.5px;
-  padding: 12px 36px;
-  border: none;
-  color: #000000;
-  background: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  border: 1px solid var(--terracotta);
+  color: var(--paper);
+  background: var(--terracotta);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
   border-radius: 0;
 }
 
 .btn-filled:hover {
-  background: var(--accent-hover);
+  background: var(--terracotta-deep);
+  border-color: var(--terracotta-deep);
+}
+
+/* ============================================
+   EDITORIAL PRIMITIVES
+   drop caps · pull quotes · marginalia · ornaments
+   ============================================ */
+
+/* Drop cap — first letter of long-form paragraphs */
+.editorial-prose > p:first-of-type::first-letter,
+p.has-dropcap::first-letter {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 5.4em;
+  line-height: 0.85;
+  float: left;
+  margin: 0.08em 0.12em -0.05em 0;
+  color: var(--terracotta);
+}
+
+/* Pull quote — terracotta vertical rule, large italic serif */
+.pull-quote {
+  margin: 56px 0;
+  padding: 8px 0 8px 32px;
+  border-left: 2px solid var(--terracotta);
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  max-width: 600px;
+}
+
+.pull-quote cite {
+  display: block;
+  margin-top: 14px;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-faint);
+}
+
+/* Ornament — sparingly placed section divider */
+.ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 64px auto;
+  color: var(--terracotta);
+  font-size: 14px;
+  letter-spacing: 0.4em;
+  opacity: 0.7;
+}
+
+.ornament::before,
+.ornament::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 1px;
+  background: var(--ink-rule);
+}
+
+/* Numbered article marker — "№ 01" style */
+.article-number {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 12px;
+}
+
+.article-number::before {
+  content: '№';
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 400;
+  margin-right: 6px;
+  color: var(--terracotta);
+}
+
+/* Marginalia — small italic note in margin */
+.marginalia {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink-faint);
+  border-left: 1px solid var(--ink-rule);
+  padding-left: 14px;
+  margin: 0;
+}
+
+/* Issue / edition tag — subtle masthead element */
+.issue-tag {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.issue-tag em {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  font-size: 13px;
+  margin-left: 4px;
+}
+
+/* Home masthead — issue framing above hero */
+.home-masthead {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 4px 40px 16px;
+}
+
+.home-masthead-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--ink-rule);
+}
+
+@media (max-width: 640px) {
+  .home-masthead { padding: 4px 24px 12px; }
+  .home-masthead-inner { font-size: 9px; }
+  .home-masthead-inner .issue-tag { font-size: 9px; letter-spacing: 0.18em; }
 }
 
 /* ============================================
@@ -197,29 +429,33 @@ img {
 
 .nav-socials {
   display: flex;
-  gap: 14px;
+  gap: 16px;
   align-items: center;
-  margin-left: 24px;
-  padding-left: 24px;
-  border-left: 1px solid rgba(170,170,170,0.25);
+  margin-left: 22px;
+  padding-left: 22px;
+  border-left: 1px solid var(--ink-rule);
 }
 
 .nav-socials a {
-  color: var(--text);
+  color: var(--ink-faint);
   transition: color 0.2s ease;
   display: flex;
   align-items: center;
 }
 
 .nav-socials a:hover {
-  color: var(--accent);
+  color: var(--terracotta);
+}
+
+.nav-wordmark:hover {
+  color: inherit;
 }
 
 .main-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 28px 40px;
+  padding: 24px 40px;
   max-width: var(--content-width);
   margin: 0 auto;
   width: 100%;
@@ -229,7 +465,7 @@ img {
 .main-nav::after {
   content: '';
   display: block;
-  border-top: 1px solid rgba(85,85,85,0.15);
+  border-top: 1px solid var(--ink-rule);
   position: absolute;
   bottom: 0;
   left: 40px;
@@ -244,19 +480,34 @@ img {
 }
 
 .nav-links a {
-  font-family: var(--font-nav);
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: normal;
-  color: var(--text-nav);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
   transition: color 0.2s ease;
   padding: 0 16px;
   line-height: 40px;
+  position: relative;
 }
 
-.nav-links a:hover,
+.nav-links a:hover {
+  color: var(--terracotta);
+}
+
 .nav-links a.active {
-  color: var(--accent);
+  color: var(--ink);
+}
+
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 4px;
+  height: 1px;
+  background: var(--terracotta);
 }
 
 .mobile-menu-btn {
@@ -314,57 +565,61 @@ img {
 
 /* Default tagline — small, subtle (about, songs pages) */
 .banner-content .tagline {
-  font-family: var(--font-heading);
+  font-family: var(--font-display);
   font-style: italic;
-  font-size: 14px;
-  font-weight: 300;
+  font-size: 18px;
+  font-weight: 400;
   letter-spacing: 0;
-  color: rgba(255,255,255,0.85);
-  margin-bottom: 8px;
+  color: rgba(255,255,255,0.92);
+  margin-bottom: 12px;
 }
 
 /* Homepage only — tagline is the hero */
 .banner-content--centered .tagline {
-  font-size: 28px;
-  font-weight: 300;
-  letter-spacing: 1px;
-  color: rgba(255,255,255,0.92);
-  margin-bottom: 12px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: rgba(255,255,255,0.96);
+  margin-bottom: 16px;
   text-align: center;
-  text-shadow: 0 2px 24px rgba(0,0,0,0.6);
+  text-shadow: 0 2px 24px rgba(0,0,0,0.5);
 }
 
 .banner-content h1 {
-  font-family: var(--font-heading);
-  font-size: 36px;
+  font-family: var(--font-display);
+  font-size: 56px;
   font-weight: 400;
+  letter-spacing: -0.02em;
   color: var(--white);
-  line-height: 1.2;
-  margin-bottom: 12px;
+  line-height: 1.05;
+  margin-bottom: 16px;
 }
 
 .banner-content p {
-  font-size: 14px;
-  color: rgba(255,255,255,0.8);
-  line-height: 1.6;
-  max-width: 420px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.65;
+  max-width: 440px;
 }
 
-/* ── Homepage hero: Devanagari as visual anchor ── */
+/* ── Homepage hero: warmer, more open ── */
 .inset-banner--centered::after {
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,0.1) 0%,
-    rgba(0,0,0,0.15) 40%,
-    rgba(0,0,0,0.55) 75%,
-    rgba(0,0,0,0.72) 100%
+    rgba(20, 12, 4, 0.05) 0%,
+    rgba(20, 12, 4, 0.1) 35%,
+    rgba(20, 12, 4, 0.5) 70%,
+    rgba(20, 12, 4, 0.72) 100%
   ) !important;
 }
 
 .banner-content--centered {
   left: 0 !important;
   right: 0 !important;
-  bottom: 48px !important;
+  bottom: 56px !important;
   top: auto !important;
   max-width: 100% !important;
   display: flex;
@@ -375,15 +630,16 @@ img {
 }
 
 .banner-content--centered h1 {
+  font-family: var(--font-ui) !important;
   text-align: center !important;
-  letter-spacing: 4px !important;
-  font-size: 13px !important;
-  font-weight: 400 !important;
+  letter-spacing: 0.22em !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
   text-transform: uppercase !important;
-  color: rgba(255,255,255,0.55) !important;
+  color: rgba(255,255,255,0.78) !important;
   white-space: nowrap !important;
-  margin-bottom: 28px !important;
-  text-shadow: 0 1px 12px rgba(0,0,0,0.5) !important;
+  margin-bottom: 32px !important;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4) !important;
 }
 
 .banner-content--centered p {
@@ -424,16 +680,18 @@ img {
 .card-featured-primary {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  background: var(--card-bg);
+  background: var(--paper-warm);
+  border: 1px solid var(--ink-rule);
   overflow: hidden;
   text-decoration: none;
   color: inherit;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .card-featured-primary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 28px rgba(0,0,0,0.3);
+  box-shadow: 0 14px 36px rgba(42, 31, 15, 0.1);
+  border-color: var(--ink-faint);
   color: inherit;
 }
 
@@ -446,49 +704,59 @@ img {
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
+  filter: saturate(0.92);
 }
 
 .card-featured-primary:hover .card-featured-primary-image img {
   transform: scale(1.04);
+  filter: saturate(1);
 }
 
 .card-featured-primary-content {
-  padding: 32px 28px;
+  padding: 36px 32px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .card-featured-primary-content .card-meta {
-  font-size: 11px;
-  letter-spacing: 3px;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--terracotta);
   font-weight: 500;
   margin: 0;
 }
 
 .card-featured-primary-content h3 {
-  font-size: 22px;
+  font-family: var(--font-display);
+  font-size: 30px;
   font-weight: 400;
-  color: var(--white);
+  font-style: italic;
+  letter-spacing: -0.02em;
+  color: var(--ink);
   margin: 0;
-  line-height: 1.3;
+  line-height: 1.1;
   text-align: left;
 }
 
 .card-featured-primary-content .devanagari {
-  font-size: 15px;
-  color: rgba(255,255,255,0.6);
+  font-family: var(--font-devanagari);
+  font-size: 18px;
+  color: var(--ink-soft);
   margin: 0;
+  line-height: 1.4;
 }
 
 .card-excerpt {
-  font-size: 13px;
-  color: rgba(255,255,255,0.5);
-  line-height: 1.6;
-  margin: 4px 0 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-style: italic;
+  color: var(--ink-soft);
+  line-height: 1.65;
+  margin: 8px 0 0;
 }
 
 .card-featured-secondary {
@@ -501,7 +769,7 @@ img {
   position: relative;
   max-width: var(--content-width);
   margin: 0 auto;
-  height: 300px;
+  height: 340px;
   overflow: hidden;
 }
 
@@ -509,13 +777,14 @@ img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: saturate(0.95) brightness(0.92);
 }
 
 .secondary-banner::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.45);
+  background: linear-gradient(rgba(20,12,4,0.42), rgba(20,12,4,0.55));
   pointer-events: none;
 }
 
@@ -532,34 +801,50 @@ img {
 }
 
 .secondary-banner-content h2 {
-  font-family: var(--font-heading);
-  font-size: 28px;
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-style: italic;
   font-weight: 400;
+  letter-spacing: -0.015em;
   color: var(--white);
-  line-height: 1.4;
-  margin-bottom: 24px;
+  line-height: 1.2;
+  margin-bottom: 28px;
+  max-width: 580px;
 }
 
 .secondary-banner-content p {
+  font-family: var(--font-body);
   font-size: 14px;
-  color: rgba(255,255,255,0.8);
+  color: rgba(255,255,255,0.85);
   margin-bottom: 24px;
 }
 
 /* ============================================
-   DESCRIPTION SECTION — Avenir/Nunito, centered
+   DESCRIPTION / EPIGRAPH — opening paragraph
    ============================================ */
 
 .desc-section {
-  padding: 50px 40px 60px;
-  max-width: var(--content-width);
+  padding: 80px 40px 64px;
+  max-width: var(--reading-width);
   margin: 0 auto;
   text-align: center;
-  font-family: var(--font-body);
-  font-size: 16px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-style: italic;
   font-weight: 400;
-  line-height: 1.75;
-  color: var(--text);
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
+
+.desc-section::after {
+  content: '❦';
+  display: block;
+  margin: 32px auto 0;
+  color: var(--terracotta);
+  font-size: 18px;
+  opacity: 0.55;
+  font-style: normal;
 }
 
 /* ============================================
@@ -578,79 +863,92 @@ img {
   gap: 32px;
 }
 
-/* Song Card — dark bottom area (not gradient overlay) */
+/* Song Card — paper card, editorial style */
 .song-card {
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  background: var(--card-bg);
+  background: var(--paper-warm);
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid var(--ink-rule);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .song-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(42, 31, 15, 0.08);
+  border-color: var(--ink-faint);
 }
 
 .song-card img {
   width: 100%;
   aspect-ratio: 1;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.5s ease;
+  filter: saturate(0.92);
 }
 
 .song-card:hover img {
-  transform: scale(1.05);
+  transform: scale(1.04);
+  filter: saturate(1);
 }
 
 .song-card-content {
-  padding: 28px 26px 25px;
-  background: var(--card-bg);
+  padding: 22px 24px 24px;
+  background: var(--paper-warm);
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 
 .card-read-link {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   margin-top: auto;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  font-family: var(--font-heading);
-  font-size: 11px;
-  letter-spacing: 1.5px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ink-rule);
+  font-family: var(--font-ui);
+  font-size: 10px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.4);
+  color: var(--terracotta);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, letter-spacing 0.2s ease;
 }
 
 .card-read-link:hover {
-  color: var(--accent);
+  color: var(--terracotta-deep);
+  letter-spacing: 0.22em;
 }
 
 .song-card-content h4 {
-  font-family: var(--font-heading);
-  font-size: 15px;
-  font-weight: 400;
-  color: var(--accent);
-  line-height: 1.4;
-  margin-bottom: 8px;
-}
-
-.song-card-content .devanagari {
-  font-size: 13px;
-  color: rgba(255,255,255,0.6);
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
   margin-bottom: 6px;
 }
 
+.song-card-content .devanagari {
+  font-family: var(--font-devanagari);
+  font-size: 16px;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
 .song-card-content .card-meta {
-  font-family: var(--font-body);
-  font-size: 12px;
-  font-weight: 400;
-  color: rgba(255,255,255,0.45);
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
   margin-bottom: 16px;
 }
 
@@ -659,35 +957,51 @@ img {
    ============================================ */
 
 .about-strip {
-  padding: 80px 40px;
+  padding: 96px 40px;
   max-width: var(--content-width);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: start;
+  grid-template-columns: 5fr 7fr;
+  gap: 72px;
+  align-items: center;
 }
 
 .about-strip-image {
   overflow: hidden;
-  aspect-ratio: 4/3;
+  aspect-ratio: 4/5;
+  position: relative;
 }
 
 .about-strip-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: saturate(0.92);
+}
+
+.about-strip-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255,255,255,0.15);
+  pointer-events: none;
 }
 
 .about-strip h2 {
-  font-size: 25px;
+  font-family: var(--font-display);
+  font-size: 42px;
   font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
 }
 
 .about-strip p {
-  font-size: 16px;
-  line-height: 1.75;
-  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--ink-soft);
 }
 
 /* ============================================
@@ -695,20 +1009,40 @@ img {
    ============================================ */
 
 .bottom-cta {
-  padding: 80px 40px;
+  padding: 112px 40px 96px;
   text-align: center;
   max-width: var(--narrow-width);
   margin: 0 auto;
+  position: relative;
+}
+
+.bottom-cta::before {
+  content: '⁂';
+  display: block;
+  margin: 0 auto 32px;
+  color: var(--terracotta);
+  font-size: 16px;
+  letter-spacing: 0.6em;
+  opacity: 0.5;
 }
 
 .bottom-cta h2 {
-  margin-bottom: 16px;
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin-bottom: 18px;
+  line-height: 1.15;
+  color: var(--ink);
 }
 
 .bottom-cta p {
-  margin-bottom: 28px;
-  font-size: 16px;
-  line-height: 1.75;
+  margin-bottom: 32px;
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink-soft);
 }
 
 /* ============================================
@@ -746,10 +1080,12 @@ img {
 }
 
 .footer-grid h4 {
-  font-family: var(--font-heading);
-  font-size: 22px;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-style: italic;
   font-weight: 400;
-  color: rgba(255,255,255,0.9);
+  letter-spacing: -0.01em;
+  color: rgba(255,255,255,0.92);
   margin-bottom: 16px;
 }
 
@@ -852,16 +1188,24 @@ img {
 }
 
 .songs-page-banner-content h1 {
+  font-family: var(--font-display);
   color: var(--white);
-  font-size: 40px;
+  font-size: 64px;
   font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  margin-bottom: 8px;
 }
 
 .songs-page-banner-content p {
-  color: rgba(255,255,255,0.75);
+  color: rgba(255,255,255,0.85);
   font-size: 16px;
-  font-family: var(--font-heading);
-  font-weight: 300;
+  font-family: var(--font-body);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.55;
+  max-width: 480px;
 }
 
 /* Search & Filter */
@@ -878,14 +1222,14 @@ img {
 .search-input {
   flex: 1;
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 400;
-  padding: 10px 16px;
-  border: 1px solid var(--border);
+  padding: 12px 18px;
+  border: 1px solid var(--ink-rule);
   outline: none;
-  background: var(--white);
-  color: var(--text-dark);
-  transition: border-color 0.2s ease;
+  background: var(--paper-warm);
+  color: var(--ink);
+  transition: border-color 0.2s ease, background 0.2s ease;
   border-radius: 0;
 }
 
@@ -949,100 +1293,113 @@ img {
 }
 
 .song-detail-banner-content .occasion-label {
-  font-family: var(--font-body);
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 2px;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 10px;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 14px;
   display: inline-block;
 }
 
 .song-detail-banner-content h1 {
+  font-family: var(--font-display);
   color: var(--white);
-  font-size: 36px;
+  font-size: 56px;
   font-weight: 400;
-  margin-bottom: 6px;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin-bottom: 8px;
 }
 
 .song-detail-banner-content .devanagari-title {
-  font-size: 20px;
-  color: rgba(255,255,255,0.7);
+  font-family: var(--font-devanagari);
+  font-size: 26px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.82);
+  line-height: 1.3;
 }
 
 /* Song body */
 .song-detail-body {
   max-width: var(--content-width);
   margin: 0 auto;
-  padding: 48px 40px 80px;
+  padding: 64px 40px 96px;
   text-align: justify;
 }
 
 /* Meta strip */
 .song-meta-strip {
   display: flex;
-  gap: 40px;
+  gap: 56px;
   flex-wrap: wrap;
   padding-bottom: 32px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 48px;
+  border-bottom: 1px solid var(--ink-rule);
+  margin-bottom: 64px;
 }
 
 .meta-item .meta-label {
-  font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 2px;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--text);
-  margin-bottom: 4px;
+  color: var(--ink-faint);
+  margin-bottom: 6px;
 }
 
 .meta-item .meta-value {
-  font-family: var(--font-body);
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--text);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.005em;
 }
 
 /* Lyrics columns */
 .lyrics-columns {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 36px;
-  margin-bottom: 48px;
+  gap: 48px;
+  margin-bottom: 64px;
 }
 
 .lyrics-column h3 {
-  font-family: var(--font-heading);
-  font-size: 11px;
+  font-family: var(--font-ui);
+  font-size: 10px;
   font-weight: 500;
-  letter-spacing: 4px;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--terracotta);
   margin-bottom: 24px;
-  padding-bottom: 0;
-  border-bottom: none;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ink-rule);
   display: block;
 }
 
 .lyrics-column .lyrics-text {
-  font-size: 15px;
-  line-height: 2.4;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 2.2;
   white-space: pre-line;
-  color: var(--text);
+  color: var(--ink-soft);
+  text-align: left;
 }
 
-/* Pahadi column gets priority treatment */
+/* Original Devanagari column gets priority — no left rule, but Tiro Devanagari font and warmer treatment */
 .lyrics-column:first-child {
-  border-left: 2px solid var(--accent);
-  padding-left: 20px;
+  border-left: none;
+  padding-left: 0;
 }
 
 .lyrics-column:first-child .lyrics-text {
-  font-size: 17px;
-  line-height: 2.6;
+  font-family: var(--font-devanagari);
+  font-size: 18px;
+  line-height: 2.4;
+  color: var(--ink);
   color: var(--text-dark);
   font-family: var(--font-body);
 }
@@ -1065,35 +1422,39 @@ img {
 .glossary-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  gap: 1px;
+  background: var(--ink-rule);
+  border: 1px solid var(--ink-rule);
 }
 
 .glossary-card {
-  padding: 20px 24px;
-  border: 1px solid var(--border);
-  background: #fafaf7;
+  padding: 24px 28px;
+  background: var(--paper-warm);
 }
 
 .glossary-word {
-  font-size: 20px;
-  color: var(--text-dark);
-  margin-bottom: 2px;
+  font-family: var(--font-devanagari);
+  font-size: 24px;
+  color: var(--ink);
+  margin-bottom: 4px;
   line-height: 1.3;
 }
 
 .glossary-transliteration {
-  font-family: var(--font-heading);
+  font-family: var(--font-display);
   font-style: italic;
-  font-size: 14px;
-  font-weight: 300;
-  color: var(--accent);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--terracotta);
   margin-bottom: 10px;
+  letter-spacing: -0.005em;
 }
 
 .glossary-meaning {
+  font-family: var(--font-body);
   font-size: 14px;
-  line-height: 1.7;
-  color: var(--text);
+  line-height: 1.65;
+  color: var(--ink-soft);
 }
 
 /* Glossary editor in admin */
@@ -1129,15 +1490,17 @@ img {
   width: 100%;
   text-align: left;
   padding: 0;
-  font-family: var(--font-heading);
-  font-size: 22px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 26px;
   font-weight: 400;
-  color: var(--text);
+  letter-spacing: -0.015em;
+  color: var(--ink);
 }
 
 .context-toggle svg {
   transition: transform 0.3s ease;
-  color: var(--accent);
+  color: var(--terracotta);
 }
 
 .context-toggle.open svg {
@@ -1145,6 +1508,10 @@ img {
 }
 
 .context-body {
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--ink-soft);
   padding-top: 20px;
   font-size: 16px;
   line-height: 1.75;
@@ -1232,26 +1599,43 @@ img {
 .about-body {
   max-width: var(--content-width);
   margin: 0 auto;
-  padding: 80px 40px;
-  text-align: justify;
+  padding: 96px 40px 96px;
+  text-align: left;
 }
 
 .about-story {
-  max-width: var(--narrow-width);
-  margin: 0 auto 72px;
+  max-width: var(--reading-width);
+  margin: 0 auto 80px;
 }
 
 .about-story h2 {
-  margin-bottom: 24px;
-  font-size: 25px;
+  margin-bottom: 32px;
+  font-family: var(--font-display);
+  font-size: 42px;
   font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
 }
 
 .about-story p {
-  margin-bottom: 20px;
-  font-size: 16px;
-  line-height: 1.85;
-  color: var(--text);
+  margin-bottom: 22px;
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.72;
+  color: var(--ink-soft);
+}
+
+/* Drop cap on first paragraph of about story */
+.about-story > p:first-of-type::first-letter {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 5em;
+  line-height: 0.85;
+  float: left;
+  margin: 0.08em 0.12em -0.05em 0;
+  color: var(--terracotta);
 }
 
 .about-pullquote {
@@ -1466,16 +1850,31 @@ img {
 
 .section-divider {
   text-align: center;
-  padding: 40px 0;
+  padding: 48px 0 56px;
   max-width: var(--content-width);
   margin: 0 auto;
+  position: relative;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  width: 80px;
+  height: 1px;
+  background: var(--ink-rule);
+  margin: 0 24px;
 }
 
 .section-divider span {
-  font-size: 10px;
-  color: var(--accent);
-  letter-spacing: 12px;
-  opacity: 0.6;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-style: italic;
+  color: var(--terracotta);
+  letter-spacing: 0;
+  opacity: 0.75;
+  vertical-align: middle;
 }
 
 /* Legacy mountain divider (about page) */
@@ -1550,50 +1949,52 @@ img {
 }
 
 .folk-banner-content .devanagari-title {
-  font-family: var(--font-heading);
-  font-size: 56px;
-  font-weight: 300;
+  font-family: var(--font-devanagari);
+  font-size: 64px;
+  font-weight: 400;
   color: var(--white);
-  letter-spacing: 2px;
-  margin-bottom: 8px;
+  letter-spacing: 0;
+  margin-bottom: 12px;
   line-height: 1.1;
   text-align: center;
 }
 
 .folk-banner-content .english-sub {
-  font-family: var(--font-heading);
-  font-size: 13px;
-  font-style: italic;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
   color: rgba(255, 255, 255, 0.85);
-  letter-spacing: 4px;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
 }
 
 .folk-epigraph {
-  max-width: 640px;
+  max-width: 660px;
   margin: 0 auto;
-  padding: 64px 40px 24px;
+  padding: 72px 40px 24px;
   text-align: center;
 }
 
 .folk-epigraph p {
-  font-family: var(--font-heading);
-  font-size: 19px;
+  font-family: var(--font-display);
+  font-size: 24px;
   font-style: italic;
-  font-weight: 300;
-  line-height: 1.6;
-  color: #5C4828;
-  margin-bottom: 16px;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  line-height: 1.45;
+  color: #4A3818;
+  margin-bottom: 18px;
 }
 
 .folk-epigraph .attribution {
-  font-family: var(--font-body);
-  font-size: 11px;
-  letter-spacing: 3px;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: #8B6F3D;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .folk-divider {
@@ -1624,33 +2025,34 @@ img {
 }
 
 .folk-category-header .devanagari-label {
-  font-family: var(--font-heading);
-  font-size: 38px;
-  font-weight: 300;
-  color: #3A2A12;
-  letter-spacing: 1px;
+  font-family: var(--font-devanagari);
+  font-size: 44px;
+  font-weight: 400;
+  color: #2A1F0F;
+  letter-spacing: 0;
   line-height: 1;
 }
 
 .folk-category-header .english-label {
-  font-family: var(--font-heading);
-  font-size: 11px;
-  letter-spacing: 4px;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #8B6F3D;
+  color: var(--terracotta);
   font-weight: 500;
 }
 
 .folk-category-desc {
-  font-size: 15px;
+  font-size: 17px;
   font-style: italic;
-  color: #6B5535;
+  color: #5A4828;
   margin-top: 4px;
   max-width: 100%;
-  font-family: var(--font-heading);
-  line-height: 1.7;
-  font-weight: 300;
+  font-family: var(--font-display);
+  line-height: 1.55;
+  font-weight: 400;
   flex-basis: 100%;
+  letter-spacing: -0.005em;
 }
 
 /* Horizontal scroll row */
@@ -1781,38 +2183,47 @@ img {
 }
 
 .coming-soon-inner {
-  max-width: 560px;
+  max-width: 600px;
   text-align: center;
 }
 
 .coming-soon-inner h1 {
-  font-size: 42px;
-  margin: 8px 0 24px;
-  color: var(--text-dark);
+  font-family: var(--font-display);
+  font-size: 60px;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  margin: 14px 0 32px;
+  color: var(--ink);
   text-align: center;
+  line-height: 1.05;
 }
 
 .coming-soon-inner p {
-  font-size: 16px;
-  line-height: 1.8;
-  color: var(--text);
-  margin-bottom: 16px;
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  margin-bottom: 18px;
 }
 
 .coming-soon-divider {
-  font-size: 9px;
-  color: var(--accent);
-  letter-spacing: 10px;
-  opacity: 0.5;
-  margin: 32px 0 16px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-style: italic;
+  color: var(--terracotta);
+  letter-spacing: 0;
+  opacity: 0.7;
+  margin: 40px 0 18px;
 }
 
 .coming-soon-sub {
-  font-size: 13px !important;
-  color: var(--text) !important;
-  opacity: 0.5;
-  letter-spacing: 1px;
-  font-family: var(--font-heading);
+  font-family: var(--font-ui) !important;
+  font-size: 11px !important;
+  color: var(--ink-faint) !important;
+  letter-spacing: 0.22em !important;
+  text-transform: uppercase;
+  font-weight: 500;
 }
 
 /* ============================================
@@ -1882,11 +2293,11 @@ img {
    ============================================ */
 
 @media (max-width: 768px) {
-  h1 { font-size: 28px; }
-  h2 { font-size: 22px; }
+  h1 { font-size: 36px; }
+  h2 { font-size: 26px; }
 
   .banner-echoes {
-    font-size: 32px !important;
+    font-size: 34px !important;
   }
 
   .card-featured-primary {
@@ -1894,13 +2305,28 @@ img {
   }
 
   .card-featured-primary-image {
-    height: 200px;
+    height: 220px;
   }
+
+  .card-featured-primary-content h3 { font-size: 24px; }
+  .card-featured-primary-content { padding: 24px; }
 
   .folk-banner-content .devanagari-title {
     font-size: 40px;
   }
   h3 { font-size: 19px; }
+
+  .section-heading { font-size: 28px !important; margin-bottom: 36px !important; }
+  .secondary-banner-content h2 { font-size: 26px !important; }
+  .about-strip h2 { font-size: 30px; }
+  .bottom-cta h2 { font-size: 28px; }
+  .about-story h2 { font-size: 30px; }
+  .about-story > p:first-of-type::first-letter { font-size: 4em; }
+
+  .desc-section {
+    font-size: 18px !important;
+    padding: 56px 28px 48px !important;
+  }
 
   .mobile-menu-btn {
     display: block;
@@ -1963,8 +2389,8 @@ img {
   }
 
   .banner-content--centered .tagline {
-    font-size: 18px !important;
-    letter-spacing: 0.5px !important;
+    font-size: 22px !important;
+    letter-spacing: -0.005em !important;
   }
 
   .banner-content--centered h1 {
